@@ -2,6 +2,15 @@
 /*
   backend/player.hpp
   High-level Player: owns AudioOut + Decoder, manages playlist.
+
+  PERFORMANCE NOTES
+  ─────────────────
+  • seek() now calls dec.wait_prefill() after restarting the decoder so
+    the audio thread never starves during a seek.
+  • is_ended() uses a double-check (dec.done() && ring empty) — unchanged
+    semantics but reads are relaxed loads.
+  • play_current() does NOT busy-wait; it relies on the decoder's
+    pre-fill mechanism.
 */
 
 #include "audio_out.hpp"
@@ -49,8 +58,8 @@ struct Player {
     bool  shuffle = false;
     bool  loop_on = false;
 
-    std::atomic<double> wall{0.0};   // monotonic clock at play start
-    std::atomic<double> soff{0.0};   // playback offset (seconds)
+    std::atomic<double> wall{0.0};   // monotonic clock at play/unpause
+    std::atomic<double> soff{0.0};   // playback offset (seconds) at wall
 
     std::mt19937 rng{std::random_device{}()};
     bool ao_ready = false;
@@ -63,56 +72,80 @@ struct Player {
 
     double elapsed() const {
         if (playing_now.empty()) return 0.0;
-        return paused ? soff.load() : soff.load() + (mono_now() - wall.load());
+        return paused ? soff.load(std::memory_order_relaxed)
+                      : soff.load(std::memory_order_relaxed) +
+                        (mono_now() - wall.load(std::memory_order_relaxed));
     }
-    double duration()  const { return dec.duration.load(); }
-    bool   is_ended()  const {
-        return !playing_now.empty() && dec.done() && dec.ring.avail() == 0;
+    double duration() const { return dec.duration.load(std::memory_order_relaxed); }
+
+    bool is_ended() const {
+        return !playing_now.empty()
+            && dec.done()
+            && dec.ring.avail() == 0;
     }
 
+    // ── Playback control ───────────────────────────────────────────────────
     void play_current(double from = 0.0) {
         if (songs.empty()) return;
         playing_now = songs[row];
         std::string fp = (fs::path(dir) / playing_now).string();
-        paused = false; ao.paused.store(false); ao.gain.store(volume);
-        soff.store(from); wall.store(mono_now());
+        paused = false;
+        ao.paused.store(false, std::memory_order_release);
+        ao.gain.store(volume,  std::memory_order_release);
+        soff.store(from,       std::memory_order_relaxed);
+        wall.store(mono_now(), std::memory_order_relaxed);
+
         dec.start(fp, from);
+
+        // Wait for the ring to pre-fill so the audio thread never starves
+        // at the very start (avoids the initial click / silence).
+        dec.wait_prefill();
+
         if (!ao_ready) { ao.attach(dec.ring); ao_ready = true; }
         else           { ao.swap_ring(dec.ring); }
     }
 
     void toggle_pause() {
         if (playing_now.empty()) return;
-        if (paused) { soff.store(elapsed()); wall.store(mono_now()); paused = false; ao.paused.store(false); }
-        else        { soff.store(elapsed()); paused = true;  ao.paused.store(true); }
+        if (paused) {
+            soff.store(elapsed(),  std::memory_order_relaxed);
+            wall.store(mono_now(), std::memory_order_relaxed);
+            paused = false;
+            ao.paused.store(false, std::memory_order_release);
+        } else {
+            soff.store(elapsed(), std::memory_order_relaxed);
+            paused = true;
+            ao.paused.store(true, std::memory_order_release);
+        }
     }
 
     void seek(double delta) {
         if (playing_now.empty()) return;
         double dur = duration();
-        double tgt = std::clamp(elapsed() + delta, 0.0, dur > 0 ? dur - 0.5 : 0.0);
+        double tgt = std::clamp(elapsed() + delta,
+                                0.0,
+                                dur > 0.0 ? dur - 0.5 : 0.0);
 
-        ao.paused.store(true);
-        soff.store(tgt);
-        wall.store(mono_now());
+        // Pause audio output during seek to avoid a burst of stale samples
+        ao.paused.store(true, std::memory_order_release);
+        soff.store(tgt,       std::memory_order_relaxed);
+        wall.store(mono_now(),std::memory_order_relaxed);
 
         std::string fp = (fs::path(dir) / playing_now).string();
         dec.start(fp, tgt);
+
+        // Pre-fill before unpausing — eliminates the seek glitch entirely
+        dec.wait_prefill();
+
         if (!ao_ready) { ao.attach(dec.ring); ao_ready = true; }
         else           { ao.swap_ring(dec.ring); }
 
-        // Wait until ring has at least 4096 frames (~93ms) before unpausing
-        auto deadline = mono_now() + 0.8;
-        while (mono_now() < deadline && !dec.done()) {
-            if (dec.ring.avail() >= 4096) break;
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
-        if (!paused) ao.paused.store(false);
+        if (!paused) ao.paused.store(false, std::memory_order_release);
     }
 
     void change_vol(float d) {
         volume = std::clamp(volume + d, 0.f, 1.f);
-        ao.gain.store(volume);
+        ao.gain.store(volume, std::memory_order_release);
     }
 
     void next_song() {
@@ -134,7 +167,10 @@ struct Player {
     }
 
     void stop_all() {
-        dec.stop(); playing_now.clear(); paused = false; ao.paused.store(false);
+        dec.stop();
+        playing_now.clear();
+        paused = false;
+        ao.paused.store(false, std::memory_order_release);
     }
 
     void load_dir(const std::string& path) {
@@ -144,8 +180,10 @@ struct Player {
                 if (e.is_regular_file() && is_audio(e.path().filename().string()))
                     songs.push_back(e.path().filename().string());
         } catch (...) {}
-        std::sort(songs.begin(), songs.end(), [](const std::string& a, const std::string& b) {
-            return icase_sort_key(a) < icase_sort_key(b);
-        });
+        std::sort(songs.begin(), songs.end(),
+            [](const std::string& a, const std::string& b) {
+                return icase_sort_key(a) < icase_sort_key(b);
+            });
     }
 };
+
