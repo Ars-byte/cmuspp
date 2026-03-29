@@ -24,19 +24,25 @@
 
 namespace fs = std::filesystem;
 
-// ── Global theme manager ────────────────────────────────────────────────────
 static ThemeManager g_themes;
 
-int main() {
-    // Load any XML themes from the themes/ directory next to the binary.
-    // Themes with the same name as a built-in will override it.
-    g_themes.load_xml_dir("themes");
+// Manejador vacío para interrumpir select() cuando se redimensiona la terminal
+void handle_sigwinch(int) {}
 
+int main() {
+    g_themes.load_xml_dir("themes");
     init_colors(g_themes);
     signal(SIGPIPE, SIG_IGN);
+
+    // Registrar SIGWINCH sin reinicio automático para interrumpir la lectura de teclas
+    struct sigaction sa;
+    sa.sa_handler = handle_sigwinch;
+    sa.sa_flags = 0; 
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGWINCH, &sa, nullptr);
+
     RawTerm rt(STDIN_FILENO);
 
-    // Enter alternate screen buffer + enable synchronized output (no flicker)
     emit("\033[?1049h\033[?2026h");
     emit(A::CLS);
 
@@ -51,27 +57,60 @@ int main() {
     player.load_dir(sel);
     draw_player(player, g_themes);
 
+    // Track last draw time for the progress-bar refresh rate
+    double last_draw = mono_now();
+    static constexpr double DRAW_INTERVAL = 0.125;  // 8 fps for progress bar
+    TSz last_tsz = tsz();
+
     while (true) {
+        // ── Empty playlist guard ─────────────────────────────────────────
         if (player.songs.empty()) {
             emit(std::string(A::CLS) + A::SHOW); flush_out();
             sel = browse(rt);
-            if (!sel.empty()) { player.load_dir(sel); draw_player(player, g_themes); }
-            else break;
+            if (!sel.empty()) {
+                player.load_dir(sel);
+                draw_player(player, g_themes);
+                last_draw = mono_now();
+            } else {
+                break;
+            }
             continue;
         }
 
+        // ── Auto-advance ─────────────────────────────────────────────────
         if (!player.playing_now.empty() && !player.paused && player.is_ended()) {
-            player.next_song(); draw_player(player, g_themes);
-        }
-
-        std::string key = read_key(rt, 0.12);
-        if (key.empty()) {
-            if (!player.playing_now.empty() && !player.paused) draw_player(player, g_themes);
+            player.next_song();
+            draw_player(player, g_themes);
+            last_draw = mono_now();
             continue;
         }
 
+        // ── Input poll ───────────────────────────────────────────────────
+        std::string key = read_key(rt, 0.12);
+
+        // Detectar si la terminal cambió de tamaño
+        TSz cur_tsz = tsz();
+        bool resized = (cur_tsz.cols != last_tsz.cols || cur_tsz.rows != last_tsz.rows);
+        if (resized) last_tsz = cur_tsz;
+
+        if (key.empty()) {
+            // No key — redraw if resized, OR if playing and the progress bar needs refresh
+            if (resized) {
+                draw_player(player, g_themes);
+                last_draw = mono_now();
+            } else if (!player.playing_now.empty() && !player.paused) {
+                double now = mono_now();
+                if (now - last_draw >= DRAW_INTERVAL) {
+                    draw_player(player, g_themes);
+                    last_draw = now;
+                }
+            }
+            continue;
+        }
+
+        // ── Key dispatch ─────────────────────────────────────────────────
         bool redraw = true;
-        int n = (int)player.songs.size();
+        int  n      = (int)player.songs.size();
 
         if      (key == "\x1b[A" || key == "k") player.row = (player.row - 1 + n) % n;
         else if (key == "\x1b[B" || key == "j") player.row = (player.row + 1) % n;
@@ -83,18 +122,22 @@ int main() {
         else if (key == "\x1b[C" || key == "l")  player.seek(+5.0);
         else if (key == "+" || key == "=")       player.change_vol(+0.05f);
         else if (key == "-" || key == "_")       player.change_vol(-0.05f);
-        else if (key == "s" || key == "S")       player.shuffle = !player.shuffle;
-        else if (key == "r" || key == "R")       player.loop_on = !player.loop_on;
+        else if (key == "s" || key == "S")       player.shuffle  = !player.shuffle;
+        else if (key == "r" || key == "R")       player.loop_on  = !player.loop_on;
         else if (key == "t" || key == "T")       apply_theme(g_themes, g_themes.current + 1);
         else if (key == "o" || key == "O") {
             emit(std::string(A::CLS) + A::SHOW); flush_out();
             std::string s2 = browse(rt);
             if (!s2.empty()) player.load_dir(s2);
+            // force redraw below
         }
         else if (key == "q" || key == "Q") break;
-        else redraw = false;
+        else redraw = resized; // Si no es una tecla válida, redibujamos sólo si se redimensionó
 
-        if (redraw) draw_player(player, g_themes);
+        if (redraw) {
+            draw_player(player, g_themes);
+            last_draw = mono_now();
+        }
     }
 
     player.stop_all();
