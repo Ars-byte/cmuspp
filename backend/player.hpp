@@ -1,18 +1,5 @@
+
 #pragma once
-/*
-  backend/player.hpp
-  High-level Player: owns AudioOut + Decoder, manages playlist.
-
-  PERFORMANCE NOTES
-  ─────────────────
-  • seek() now calls dec.wait_prefill() after restarting the decoder so
-    the audio thread never starves during a seek.
-  • is_ended() uses a double-check (dec.done() && ring empty) — unchanged
-    semantics but reads are relaxed loads.
-  • play_current() does NOT busy-wait; it relies on the decoder's
-    pre-fill mechanism.
-*/
-
 #include "audio_out.hpp"
 #include "decoder.hpp"
 
@@ -24,7 +11,6 @@
 
 namespace fs = std::filesystem;
 
-// ── Utility ────────────────────────────────────────────────────────────────
 inline bool is_audio(const std::string& n) {
     static const char* exts[] = {
         ".mp3", ".flac", ".wav", ".ogg", ".opus", ".aiff", ".aif", ".au", nullptr
@@ -45,7 +31,6 @@ inline std::string icase_sort_key(const std::string& s) {
     return r;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
 struct Player {
     AudioOut ao;
     Decoder  dec;
@@ -58,8 +43,8 @@ struct Player {
     bool  shuffle = false;
     bool  loop_on = false;
 
-    std::atomic<double> wall{0.0};   // monotonic clock at play/unpause
-    std::atomic<double> soff{0.0};   // playback offset (seconds) at wall
+    std::atomic<double> wall{0.0};   
+    std::atomic<double> soff{0.0};   
 
     std::mt19937 rng{std::random_device{}()};
     bool ao_ready = false;
@@ -84,11 +69,12 @@ struct Player {
             && dec.ring.avail() == 0;
     }
 
-    // ── Playback control ───────────────────────────────────────────────────
     void play_current(double from = 0.0) {
         if (songs.empty()) return;
         playing_now = songs[row];
+        
         std::string fp = (fs::path(dir) / playing_now).string();
+
         paused = false;
         ao.paused.store(false, std::memory_order_release);
         ao.gain.store(volume,  std::memory_order_release);
@@ -96,9 +82,6 @@ struct Player {
         wall.store(mono_now(), std::memory_order_relaxed);
 
         dec.start(fp, from);
-
-        // Wait for the ring to pre-fill so the audio thread never starves
-        // at the very start (avoids the initial click / silence).
         dec.wait_prefill();
 
         if (!ao_ready) { ao.attach(dec.ring); ao_ready = true; }
@@ -126,15 +109,13 @@ struct Player {
                                 0.0,
                                 dur > 0.0 ? dur - 0.5 : 0.0);
 
-        // Pause audio output during seek to avoid a burst of stale samples
         ao.paused.store(true, std::memory_order_release);
         soff.store(tgt,       std::memory_order_relaxed);
         wall.store(mono_now(),std::memory_order_relaxed);
 
         std::string fp = (fs::path(dir) / playing_now).string();
+                         
         dec.start(fp, tgt);
-
-        // Pre-fill before unpausing — eliminates the seek glitch entirely
         dec.wait_prefill();
 
         if (!ao_ready) { ao.attach(dec.ring); ao_ready = true; }
@@ -186,4 +167,3 @@ struct Player {
             });
     }
 };
-
