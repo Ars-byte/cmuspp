@@ -1,9 +1,4 @@
 #pragma once
-/*
-  frontend/draw.hpp
-  TUI rendering: draw_player(), draw_browser(), browse().
-*/
-
 #include "ansi.hpp"
 #include "cover_art.hpp"
 #include "../backend/player.hpp"
@@ -16,7 +11,6 @@
 
 namespace fs = std::filesystem;
 
-// ── Strip audio extension for display ────────────────────────────────────────
 inline std::string strip_ext(const std::string& name) {
     static const char* exts[] = {
         ".mp3", ".flac", ".wav", ".ogg", ".opus", ".aiff", ".aif", ".au", nullptr
@@ -31,7 +25,6 @@ inline std::string strip_ext(const std::string& name) {
     return name;
 }
 
-// ── File browser data ────────────────────────────────────────────────────────
 struct BD {
     std::vector<std::string> dirs, songs;
     mutable std::unordered_map<std::string, int> audio_count_cache;
@@ -47,7 +40,7 @@ inline BD scan(const std::string& path) {
             else if (e.is_regular_file() && is_audio(nm)) d.songs.push_back(nm);
         }
     } catch (...) {}
-    auto ic =[](const std::string& a, const std::string& b) {
+    auto ic = [](const std::string& a, const std::string& b) {
         return icase_sort_key(a) < icase_sort_key(b);
     };
     std::sort(d.dirs.begin(),  d.dirs.end(),  ic);
@@ -69,9 +62,9 @@ inline int count_au_cached(const BD& d, const std::string& parent,
     return n;
 }
 
-// ── Draw: player ─────────────────────────────────────────────────────────────
+// ── Draw: player ──────────────────────────────────────────────────────────────
 inline void draw_player(Player& p, const ThemeManager& mgr) {
-    auto[cols, rows] = tsz();
+    TSz sz = tsz(); int cols = sz.cols, rows = sz.rows;
 
     const int FIXED_ROWS   = 4;
     const int PLAYLIST_MIN = 28;
@@ -94,16 +87,24 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     int max_vis    = content_rows;
 
     static CoverCache cover_cache;
-    std::string kitty_upload;
 
     std::string full_path;
-    if (!p.playing_now.empty())
+    if (!p.playing_now.empty()) {
         full_path = (fs::path(p.dir) / p.playing_now).string();
+    }
 
+    const int COVER_TERM_ROW = 2;
+    const int COVER_TERM_COL = 1;
+
+    std::string kitty_seq;
     const std::vector<std::string>* cover_lines = nullptr;
+
     if (show_cover) {
-        cover_lines = &cover_cache.get(full_path, cover_w, cover_h, A::W2, A::W3, A::GRN);
-        kitty_upload = cover_cache.consume_kitty_upload();
+        kitty_seq  = cover_cache.get_kitty_seq(
+            full_path, cover_w, cover_h,
+            A::W2, A::W3, A::GRN,
+            COVER_TERM_ROW, COVER_TERM_COL);
+        cover_lines = &cover_cache.get_lines();
     }
 
     int total = (int)p.songs.size();
@@ -112,28 +113,31 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     if (end == total) start = std::max(0, total - max_vis);
 
     std::string o;
-    o.reserve((size_t)cols * rows * 8 + kitty_upload.size());
-
+    o.reserve((size_t)cols * rows * 8);
+    o += "\033[?2026h"; // BSU
     o += "\033[H\033[2J";
     o += A::HIDE;
 
-    if (!kitty_upload.empty()) o += kitty_upload;
+    if (!kitty_seq.empty()) o += kitty_seq;
 
+    // ── Header row ────────────────────────────────────────────────────────────
     o += A::BG_HDR; o += A::BOLD;
     o += " "; o += A::GRN; o += A::NOTE;
     o += " "; o += A::W1; o += "CMUS++";
     {
         std::string dn = fs::path(p.dir).filename().string();
         if (dn.empty()) dn = p.dir;
+
         int theme_w = 2 + (int)mgr.active().name.size();
         o += A::W2; o += center_in(dn, cols - 9 - theme_w);
         o += A::W3; o += " "; o += mgr.active().name; o += " ";
     }
     o += A::RST; o += "\n";
 
+    // ── Content rows ──────────────────────────────────────────────────────────
     for (int row_i = 0; row_i < max_vis; ++row_i) {
         if (show_cover) {
-            if (row_i < cover_h && cover_lines) {
+            if (cover_lines && row_i < (int)cover_lines->size()) {
                 o += (*cover_lines)[row_i];
             } else {
                 o += A::RST;
@@ -173,6 +177,7 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
         o += A::RST; o += "\n";
     }
 
+    // ── Title + time row ──────────────────────────────────────────────────────
     {
         double el  = p.elapsed(), dur = p.duration();
         std::string now = p.playing_now.empty() ? "Stopped" : strip_ext(p.playing_now);
@@ -184,26 +189,24 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
             timestr += A::W3; timestr += " / ";
             timestr += A::W2; timestr += fmt_t(dur);
         }
-        timestr += A::RST;
 
-        int time_vis = (dur > 0)
-            ? (cpw(fmt_t(el)) + 3 + cpw(fmt_t(dur)))
-            : cpw(fmt_t(el));
-        int title_w = cols - time_vis - 1;
-
-        o += A::W0; o += A::BOLD;
-        o += pad_r(now, title_w);
-        o += A::RST; o += timestr; o += "\n";
+        int tw = (int)(dur > 0 ? fmt_t(el).size() + 3 + fmt_t(dur).size() : fmt_t(el).size());
+        int nw = cols - tw - 2;
+        o += A::W1; o += A::BOLD; o += trunc_str(now, nw);
+        o += A::RST;
+        int fill = std::max(0, nw - cpw(now));
+        o += std::string(fill, ' ');
+        o += timestr; o += A::RST; o += "\n";
     }
 
+    // ── Progress bar ──────────────────────────────────────────────────────────
     {
         double el = p.elapsed(), dur = p.duration();
         int bw = cols;
-        if (dur > 0) {
-            int f = (int)(std::min(1.0, el / dur) * bw);
-            o += A::GRN; o += rep(A::PROG,  f);
-            o += A::W0;  o += A::DOT;
-            o += A::W3;  o += rep(A::TRACK, std::max(0, bw - f - 1));
+        if (dur > 0 && bw > 0) {
+            int filled = std::min(bw, (int)(el / dur * bw));
+            o += A::GRN;  o += rep(A::PROG,  filled);
+            o += A::W3;   o += rep(A::TRACK, bw - filled);
         } else {
             static const char* sp[] = {"⣾","⣽","⣻","⢿","⡿","⣟","⣯","⣷"};
             o += A::AMB; o += sp[(int)(el * 6) % 8]; o += A::RST;
@@ -212,6 +215,7 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
         o += A::RST; o += "\n";
     }
 
+    // ── Status bar ────────────────────────────────────────────────────────────
     o += A::BG_STAT;
     if (p.paused)                   { o += " "; o += A::AMB; o += A::PAUS_I; }
     else if (p.playing_now.empty()) { o += " "; o += A::W3;  o += A::STOP_I; }
@@ -224,10 +228,9 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     o += A::W3;  o += rep(A::EMPTY, 8 - vn);
     o += A::W2;
 
-    char tc[20];
+    char tc[24];
     snprintf(tc, sizeof(tc), "  %d/%d", p.row + 1, total);
     o += tc;
-
     o += " ";
     o += (p.shuffle ? A::GRN : A::W3);
     o += A::SHUF_I; o += (p.shuffle ? " SHUF" : " shuf");
@@ -237,25 +240,26 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     o += A::W2;
 
     static const char* hints =
-        " · ↑↓/jk · Enter · n/p · Space · ←→ seek · +/- vol · t theme · o browse · q quit";
+        " · ↑/↓ nav · Enter play · Space pause · ←/→ seek · o browse · t theme · q quit";
     int left_vis = 2 + 12 + (int)strlen(tc) + 7 + 7;
-    int fill = std::max(0, cols - left_vis - cpw(hints));
-    o += std::string(fill, ' ');
+    int hfill = std::max(0, cols - left_vis - cpw(hints));
+    o += std::string(hfill, ' ');
     o += A::W3; o += hints;
     o += A::RST;
 
+    o += "\033[?2026l"; // ESU
     emit(o);
-    flush_out();
 }
 
 inline void draw_browser(const std::string& path, const BD& d, int cur, int scr) {
-    auto[cols, rows] = tsz();
+    TSz sz = tsz(); int cols = sz.cols, rows = sz.rows;
     int max_vis = std::max(1, rows - 9);
     int total   = (int)(d.dirs.size() + d.songs.size());
 
     std::string o;
     o.reserve((size_t)cols * rows * 6);
 
+    o += "\033[?2026h";
     o += HOME_NOFLASH; o += A::HIDE;
 
     o += A::BG_HDR; o += A::BOLD;
@@ -288,7 +292,6 @@ inline void draw_browser(const std::string& path, const BD& d, int cur, int scr)
             int sc = count_au_cached(d, path, nm);
             std::string badge;
             if (sc > 0) {
-                badge.reserve(24);
                 badge += " "; badge += A::GRN; badge += A::NOTE;
                 badge += std::to_string(sc); badge += A::RST;
             }
@@ -342,8 +345,8 @@ inline void draw_browser(const std::string& path, const BD& d, int cur, int scr)
     o += std::string(std::max(0, cols - kb_vis), ' ');
     o += A::RST;
 
+    o += "\033[?2026l";
     emit(o);
-    flush_out();
 }
 
 inline std::string browse(RawTerm& rt, const std::string& start = "") {
@@ -366,7 +369,7 @@ inline std::string browse(RawTerm& rt, const std::string& start = "") {
 
         if (key.empty() && !resized) continue;
 
-        auto[cols, rows] = cur_tsz;
+        TSz sz = cur_tsz; int cols = sz.cols, rows = sz.rows;
         int max_vis = std::max(1, rows - 9);
         int total   = (int)(d.dirs.size() + d.songs.size());
         bool redraw = true;
