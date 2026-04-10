@@ -1,12 +1,3 @@
-
-
-
-Aquí tienes la versión en inglés (`README-EN.md`), manteniendo exactamente la misma estructura, imágenes y formato, pero con todo traducido y adaptado de forma natural.
-
-(Nota: Cambié el enlace de idioma arriba para que ahora apunte de vuelta al archivo en español, y arreglé la etiqueta del bloque de código del título para que se renderice bien en GitHub).
-
-***
-
 ```markdown
 # CMUS++
 
