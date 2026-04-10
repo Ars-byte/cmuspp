@@ -1,31 +1,4 @@
 #pragma once
-/*
-  frontend/theme.hpp
-  Theme definitions + XML theme loader.
-
-  Built-in themes are compiled in as defaults.
-  Custom themes can be loaded from XML files at runtime.
-
-  XML format  (themes/<name>.xml):
-  ────────────────────────────────
-  <?xml version="1.0" encoding="UTF-8"?>
-  <theme name="mytheme">
-    <!-- Foreground colors: bright → muted -->
-    <fg0 r="230" g="230" b="220"/>
-    <fg1 r="180" g="178" b="168"/>
-    <fg2 r="130" g="128" b="118"/>
-    <fg3 r="85"  g="83"  b="75"/>
-    <!-- Accent and warning -->
-    <acc  r="140" g="200" b="140"/>
-    <warn r="210" g="170" b="70"/>
-    <!-- Background combos: bg + fg for each zone -->
-    <bghdr bgr="22"  bgg="22"  bgb="18"  fgr="190" fgg="185" fgb="175"/>
-    <bgsel bgr="50"  bgg="50"  bgb="44"  fgr="255" fgg="255" fgb="245"/>
-    <bgplay bgr="20" bgg="42"  bgb="20"  fgr="140" fgg="200" fgb="140"/>
-    <bgstat bgr="14" bgg="14"  bgb="12"  fgr="140" fgg="135" fgb="125"/>
-  </theme>
-*/
-
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -36,14 +9,13 @@
 namespace fs = std::filesystem;
 
 // ── ANSI helpers ────────────────────────────────────────────────────────────
-// We store the escape sequences as std::string inside each Theme at load time.
 inline std::string make_fg(int r, int g, int b) {
-    char buf[32];
+    char buf[64]; 
     snprintf(buf, sizeof(buf), "\033[38;2;%d;%d;%dm", r, g, b);
     return buf;
 }
 inline std::string make_bg(int r, int g, int b) {
-    char buf[32];
+    char buf[64]; 
     snprintf(buf, sizeof(buf), "\033[48;2;%d;%d;%dm", r, g, b);
     return buf;
 }
@@ -55,11 +27,8 @@ inline std::string make_combo(int bgr, int bgg, int bgb,
 // ── Theme struct ────────────────────────────────────────────────────────────
 struct Theme {
     std::string name;
-    // Foreground
     std::string fg0, fg1, fg2, fg3;
-    // Accent / warning
     std::string acc, warn;
-    // Background combos (bg escape + fg escape concatenated)
     std::string bghdr, bgsel, bgplay, bgstat;
 };
 
@@ -87,10 +56,6 @@ inline std::vector<Theme> make_builtin_themes() {
         v.push_back(std::move(t));
     };
 
-    //         name         fg0              fg1              fg2             fg3
-    //         acc          warn
-    //         bghdr bg+fg                   bgsel bg+fg
-    //         bgplay bg+fg                  bgstat bg+fg
     add("default",
         230,230,220,  180,178,168,  130,128,118,  85,83,75,
         140,200,140,  210,170,70,
@@ -166,48 +131,39 @@ inline std::vector<Theme> make_builtin_themes() {
     return v;
 }
 
-// ── Minimal XML parser (no extra deps) ──────────────────────────────────────
+// ── Minimal XML parser (A PRUEBA DE BALAS) ──────────────────────────────────
 namespace xml_detail {
 
-// Returns the integer value of attribute `attr` inside `tag_text`, or -1.
-inline int attr_int(const std::string& tag_text, const char* attr) {
-    std::string pat = std::string(attr) + "=\"";
-    size_t pos = tag_text.find(pat);
-    if (pos == std::string::npos) {
-        // try attr='...'
-        pat = std::string(attr) + "='";
-        pos = tag_text.find(pat);
-        if (pos == std::string::npos) return -1;
-    }
-    pos += pat.size();
-    size_t end = tag_text.find_first_of("\"'", pos);
-    if (end == std::string::npos) return -1;
-    try { return std::stoi(tag_text.substr(pos, end - pos)); }
-    catch (...) { return -1; }
-}
-
-// Returns attribute string value, empty if not found.
 inline std::string attr_str(const std::string& tag_text, const char* attr) {
-    std::string pat = std::string(attr) + "=\"";
-    size_t pos = tag_text.find(pat);
-    if (pos == std::string::npos) {
-        pat = std::string(attr) + "='";
-        pos = tag_text.find(pat);
-        if (pos == std::string::npos) return {};
+    size_t pos = tag_text.find(attr);
+    while (pos != std::string::npos) {
+        size_t eq_pos = tag_text.find('=', pos);
+        if (eq_pos != std::string::npos) {
+            size_t q1 = tag_text.find_first_of("\"'", eq_pos);
+            if (q1 != std::string::npos) {
+                size_t q2 = tag_text.find_first_of("\"'", q1 + 1);
+                if (q2 != std::string::npos) {
+                    return tag_text.substr(q1 + 1, q2 - q1 - 1);
+                }
+            }
+        }
+        pos = tag_text.find(attr, pos + 1);
     }
-    pos += pat.size();
-    size_t end = tag_text.find_first_of("\"'", pos);
-    if (end == std::string::npos) return {};
-    return tag_text.substr(pos, end - pos);
+    return {};
 }
 
-// Find opening tag content (everything between < and >) for a given tag name.
+inline int attr_int(const std::string& tag_text, const char* attr) {
+    std::string val = attr_str(tag_text, attr);
+    if (val.empty()) return -1;
+    try { return std::stoi(val); } catch(...) { return -1; }
+}
+
 inline std::string find_tag(const std::string& xml, const char* tag) {
     std::string open = std::string("<") + tag;
     size_t pos = xml.find(open);
     while (pos != std::string::npos) {
         char next = xml[pos + open.size()];
-        if (next == ' ' || next == '/' || next == '>') {
+        if (next == ' ' || next == '/' || next == '>' || next == '\n' || next == '\t' || next == '\r') {
             size_t end = xml.find('>', pos);
             if (end != std::string::npos)
                 return xml.substr(pos, end - pos + 1);
@@ -219,8 +175,6 @@ inline std::string find_tag(const std::string& xml, const char* tag) {
 
 } // namespace xml_detail
 
-// ── Load one Theme from an XML file ─────────────────────────────────────────
-// Returns false and leaves `t` untouched on parse error.
 inline bool load_theme_xml(const std::string& path, Theme& t) {
     FILE* f = fopen(path.c_str(), "r");
     if (!f) return false;
@@ -233,13 +187,11 @@ inline bool load_theme_xml(const std::string& path, Theme& t) {
 
     using namespace xml_detail;
 
-    // <theme name="...">
     std::string root = find_tag(xml, "theme");
     if (root.empty()) return false;
     std::string nm = attr_str(root, "name");
     if (nm.empty()) return false;
 
-    // Helper: parse a <tag r g b /> into a fg escape
     auto read_fg = [&](const char* tag) -> std::string {
         std::string s = find_tag(xml, tag);
         if (s.empty()) return {};
@@ -248,7 +200,6 @@ inline bool load_theme_xml(const std::string& path, Theme& t) {
         return make_fg(r, g, b);
     };
 
-    // Helper: parse a <tag bgr bgg bgb fgr fgg fgb /> into a combo escape
     auto read_combo = [&](const char* tag) -> std::string {
         std::string s = find_tag(xml, tag);
         if (s.empty()) return {};
@@ -276,14 +227,12 @@ inline bool load_theme_xml(const std::string& path, Theme& t) {
 }
 
 // ── Theme manager ────────────────────────────────────────────────────────────
-// Holds all themes (built-in + XML), tracks the active index.
 struct ThemeManager {
     std::vector<Theme> themes;
     int current = 0;
 
     ThemeManager() : themes(make_builtin_themes()) {}
 
-    // Scan a directory for *.xml files and load them as extra themes.
     void load_xml_dir(const std::string& dir) {
         if (!fs::exists(dir)) return;
         for (auto& entry : fs::directory_iterator(dir)) {
@@ -292,7 +241,6 @@ struct ThemeManager {
             if (p.extension() != ".xml") continue;
             Theme t;
             if (load_theme_xml(p.string(), t)) {
-                // Replace existing theme with same name, or append.
                 auto it = std::find_if(themes.begin(), themes.end(),
                     [&](const Theme& x){ return x.name == t.name; });
                 if (it != themes.end()) *it = std::move(t);
