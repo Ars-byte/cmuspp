@@ -1,15 +1,10 @@
 #pragma once
-/*
-  frontend/ansi.hpp
-  Runtime ANSI palette (populated from ThemeManager),
-  terminal size query, raw I/O helpers, string layout utils.
-*/
-
 #include "theme.hpp"
 
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
+#include <fstream>
 #include <optional>
 #include <string>
 
@@ -19,7 +14,6 @@
 #include <termios.h>
 #include <unistd.h>
 
-// ── ANSI escape constants ────────────────────────────────────────────────────
 namespace A {
     inline const char* RST  = "\033[0m";
     inline const char* BOLD = "\033[1m";
@@ -28,20 +22,18 @@ namespace A {
     inline const char* HIDE = "\033[?25l";
     inline const char* SHOW = "\033[?25h";
 
-    // Runtime palette — set by apply_theme()
     inline const char* W0="", *W1="", *W2="", *W3="";
     inline const char* GRN="", *AMB="";
     inline const char* BG_HDR="", *BG_SEL="", *BG_PLAY="", *BG_STAT="";
 
-    // Icons
     inline const char* PLAY_I = "▶";
     inline const char* PAUS_I = "⏸";
     inline const char* STOP_I = "■";
     inline const char* NOTE   = "♪";
     inline const char* ARR    = "›";
-    inline const char* DIR_I  = "📁";  // carpeta cerrada
-    inline const char* DIR_O  = "📂";  // carpeta seleccionada / abierta
-    inline const char* AUDIO_I= "≈";   // archivo de audio
+    inline const char* DIR_I  = "📁";
+    inline const char* DIR_O  = "📂";
+    inline const char* AUDIO_I= "≈";
     inline const char* SHUF_I = "⇄";
     inline const char* LOOP_I = "↺";
     inline const char* VOL_I  = "▐";
@@ -53,10 +45,22 @@ namespace A {
     inline const char* HL     = "─";
 }
 
+// ── Config helpers (Portable) ─────────────────────────────────────────────────
+inline void save_theme_index(int idx) {
+    FILE* f = fopen(".last_theme", "w");
+    if (f) { fprintf(f, "%d\n", idx); fclose(f); }
+}
+
+inline int load_theme_index() {
+    FILE* f = fopen(".last_theme", "r");
+    if (!f) return 0;
+    int idx = 0;
+    if (fscanf(f, "%d", &idx) != 1) idx = 0;
+    fclose(f);
+    return idx >= 0 ? idx : 0;
+}
+
 // ── Theme application ────────────────────────────────────────────────────────
-// We store the c_str() pointers into a thread-local cache to avoid re-hashing.
-// The strings must stay alive as long as the pointers are used (they do —
-// they live inside ThemeManager::themes which is alive for the whole program).
 inline void apply_theme(ThemeManager& mgr, int idx) {
     mgr.set(idx);
     const Theme& t = mgr.active();
@@ -65,9 +69,14 @@ inline void apply_theme(ThemeManager& mgr, int idx) {
     A::GRN     = t.acc.c_str();   A::AMB = t.warn.c_str();
     A::BG_HDR  = t.bghdr.c_str(); A::BG_SEL  = t.bgsel.c_str();
     A::BG_PLAY = t.bgplay.c_str();A::BG_STAT = t.bgstat.c_str();
+    save_theme_index(mgr.current);
 }
 
-inline void init_colors(ThemeManager& mgr) { apply_theme(mgr, 0); }
+inline void init_colors(ThemeManager& mgr) {
+    int saved = load_theme_index();
+    if (saved >= mgr.count()) saved = 0;
+    apply_theme(mgr, saved);
+}
 
 // ── Terminal size ────────────────────────────────────────────────────────────
 struct TSz { int cols, rows; };
@@ -77,10 +86,9 @@ inline TSz tsz() {
     return { w.ws_col > 10 ? w.ws_col : 80, w.ws_row > 5 ? w.ws_row : 24 };
 }
 
-// Move cursor to top-left without clearing (avoids flash)
 static const char* HOME_NOFLASH = "\033[H";
 
-// ── Raw I/O ──────────────────────────────────────────────────────────────────
+// ── Buffered emit ────────────────────────────────────────────────────────────
 inline void emit(const std::string& s) {
     const char* p = s.data();
     size_t left = s.size();
@@ -90,7 +98,7 @@ inline void emit(const std::string& s) {
         p += n; left -= n;
     }
 }
-inline void flush_out() { /* write() is unbuffered — no-op */ }
+inline void flush_out() {}
 
 // ── String layout helpers ────────────────────────────────────────────────────
 inline std::string rep(const std::string& s, int n) {
@@ -100,7 +108,6 @@ inline std::string rep(const std::string& s, int n) {
     return r;
 }
 
-// Count Unicode codepoints in a plain (no ANSI escapes) string
 inline int cpw(const std::string& s) {
     int w = 0;
     for (size_t i = 0; i < s.size(); ) {
@@ -111,7 +118,6 @@ inline int cpw(const std::string& s) {
     return w;
 }
 
-// Truncate a plain string to `lim` visible columns
 inline std::string trunc_str(const std::string& s, int lim) {
     int w = 0;
     for (size_t i = 0; i < s.size(); ) {
@@ -123,14 +129,12 @@ inline std::string trunc_str(const std::string& s, int lim) {
     return s;
 }
 
-// Pad a plain string to exactly `w` columns
 inline std::string pad_r(const std::string& s, int w) {
     int dw = cpw(s);
     if (dw >= w) return trunc_str(s, w);
     return s + std::string(w - dw, ' ');
 }
 
-// Center a plain string within `w` columns
 inline std::string center_in(const std::string& s, int w) {
     int dw = cpw(s);
     if (dw >= w) return trunc_str(s, w);
@@ -138,7 +142,6 @@ inline std::string center_in(const std::string& s, int w) {
     return std::string(lp, ' ') + s + std::string(w - dw - lp, ' ');
 }
 
-// Format seconds as "M:SS"
 inline std::string fmt_t(double s) {
     int v = std::max(0, (int)s);
     char b[12]; snprintf(b, sizeof(b), "%d:%02d", v / 60, v % 60);
