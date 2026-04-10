@@ -1,82 +1,69 @@
-#!/usr/bin/env bash
-# bootstrap.sh — build CMUS++ (frontend/ + backend/ layout, optional cover art)
-set -e
+#!/bin/bash
+# bootstrap.sh - Script de compilación para CMUS++
 
-CXX="${CXX:-g++}"
+set -e # Detener el script si hay algún error
 
-CXXFLAGS="-std=c++17 -O2 -march=native -ffast-math -funroll-loops -flto \
-          -Wall -Wextra -Wno-unused-parameter"
+# Colores para la terminal
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 
-# ── Platform audio ────────────────────────────────────────────────────────────
-case "$(uname -s)" in
-  Linux)   BASE_LIBS="-lasound -lsndfile -lpthread" ;;
-  Darwin)  BASE_LIBS="-lsndfile -framework AudioToolbox -framework CoreAudio -lpthread" ;;
-  MINGW*|CYGWIN*|MSYS*) BASE_LIBS="-lsndfile -lwinmm" ;;
-  *)       echo "Unsupported platform"; exit 1 ;;
-esac
+echo -e "${BLUE}==> Iniciando compilación de CMUS++...${NC}"
 
-# ── Cover art: detect libjpeg + libpng via pkg-config ────────────────────────
-COVER_FLAGS=""
-COVER_LIBS=""
-COVER_INFO=""
+# 1. Verificar estructura de carpetas
+if [ ! -f "main.cpp" ] || [ ! -d "frontend" ] || [ ! -d "backend" ]; then
+    echo -e "${RED}Error: Estructura de carpetas incorrecta.${NC}"
+    echo "Asegúrate de que 'main.cpp', y las carpetas 'frontend' y 'backend' estén en este directorio."
+    exit 1
+fi
 
-detect_lib() {
-    local flag="$1" define="$2" lib="$3" name="$4"
-    # Try several common pkg-config names (libjpeg-turbo varies by distro)
-    local found=0
-    for candidate in "$flag" "${flag}-turbo" "${flag}8" "${flag}62"; do
-        if pkg-config --exists "$candidate" 2>/dev/null; then
-            COVER_FLAGS+=" $(pkg-config --cflags "$candidate") -D${define}"
-            COVER_LIBS+=" $(pkg-config --libs   "$candidate")"
-            COVER_INFO+=" ${name}(pkg-config:${candidate})"
-            found=1
-            break
-        fi
-    done
-    if [ "$found" -eq 0 ]; then
-        # Header probe fallback
-        local hdr
-        case "$define" in
-          *JPEG*) hdr="jpeglib.h" ;;
-          *PNG*)  hdr="png.h"     ;;
-        esac
-        if echo "#include <${hdr}>" | ${CXX} -x c++ - -fsyntax-only 2>/dev/null; then
-            COVER_FLAGS+=" -D${define}"
-            COVER_LIBS+=" -l${lib}"
-            COVER_INFO+=" ${name}(header-probe)"
-        else
-            COVER_INFO+=" [no ${name} — install lib${lib}-dev or libjpeg-turbo-devel]"
-        fi
-    fi
-}
+# 2. Detectar Compilador
+CXX=""
+if command -v g++ >/dev/null 2>&1; then
+    CXX="g++"
+elif command -v clang++ >/dev/null 2>&1; then
+    CXX="clang++"
+else
+    echo -e "${RED}Error: No se encontró g++ ni clang++. Instala un compilador de C++.${NC}"
+    exit 1
+fi
 
-detect_lib "libjpeg"  "CMUSPP_HAS_JPEG" "jpeg" "JPEG"
-detect_lib "libpng"   "CMUSPP_HAS_PNG"  "png"  "PNG"
+# 3. Detectar Sistema Operativo y configurar Flags
+OS="$(uname -s)"
+FLAGS="-std=c++17 -O3 -Wall -Wextra -pthread"
+MACROS="-DCMUSPP_HAS_JPEG -DCMUSPP_HAS_PNG"
+LIBS="-lsndfile -lpng -ljpeg"
 
-echo "Building CMUS++ …"
-echo "  Cover art decoders:${COVER_INFO}"
+echo -e "Sistema detectado: ${GREEN}$OS${NC}"
+echo -e "Compilador: ${GREEN}$CXX${NC}"
 
-# -I. exposes both frontend/ and backend/ subdirectories relative to project root
-${CXX} ${CXXFLAGS} ${COVER_FLAGS} \
-    main.cpp \
-    -I. \
-    ${BASE_LIBS} ${COVER_LIBS} \
-    -o cmuspp
+if [ "$OS" = "Linux" ]; then
+    LIBS="$LIBS -lasound"
+elif [ "$OS" = "Darwin" ]; then
+    # En macOS necesitamos los frameworks de audio nativos
+    LIBS="$LIBS -framework CoreAudio -framework AudioToolbox"
+else
+    echo -e "${RED}Sistema Operativo no soportado automáticamente por este script ($OS).${NC}"
+    exit 1
+fi
 
-echo ""
-echo "Done → ./cmuspp"
-echo ""
-echo "Usage:"
-echo "  ./cmuspp                 launch and browse from home directory"
-echo ""
-echo "Keyboard shortcuts:"
-echo "  ↑↓ / j k     navigate       Space       pause/resume"
-echo "  Enter         play           n / p       next / prev"
-echo "  ← → / h l    seek ±5 s      + / -       volume"
-echo "  s             shuffle        r           loop"
-echo "  t             cycle theme    o           open folder"
-echo "  q             quit"
-echo ""
-echo "Cover art  : embedded in MP3 (ID3v2 APIC), FLAC, OGG/OPUS,"
-echo "             or cover.jpg / folder.jpg / album.jpg next to tracks."
-echo "Custom themes: drop *.xml files in ./themes/ and restart."
+# 4. Crear carpeta de temas por defecto si no existe
+if [ ! -d "themes" ]; then
+    echo "Creando directorio de temas ('themes/')..."
+    mkdir -p themes
+fi
+
+# 5. Compilar
+echo -e "${BLUE}==> Compilando el código...${NC}"
+COMANDO="$CXX main.cpp -o cmuspp $FLAGS $MACROS $LIBS"
+
+echo "Ejecutando: $COMANDO"
+if $COMANDO; then
+    echo -e "${GREEN}==> ¡Compilación exitosa!${NC}"
+    echo -e "Puedes ejecutar el reproductor usando: ${BLUE}./cmuspp${NC}"
+else
+    echo -e "${RED}==> Hubo un error durante la compilación.${NC}"
+    echo "Asegúrate de tener instaladas las librerías: libsndfile, libasound (Linux), libjpeg y libpng."
+    exit 1
+fi
