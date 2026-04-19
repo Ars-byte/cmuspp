@@ -25,9 +25,9 @@
 
 ## Previews
 
-| Player (Gruvbox Theme) |
+| Player (with .xml theme) |
 |:---:|
-| <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/282eb741-e438-4db5-8fa9-2dc660df8a5c" /> |
+|<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2b6cf564-ecc1-4422-90fc-3db0f896fb4d" />|
 
 ---
 
