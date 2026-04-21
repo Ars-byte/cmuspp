@@ -57,6 +57,33 @@ chmod +x bootstrap.sh
 ```
 
 ---
+## For NIXOS
+
+### Run this command:
+
+```
+nix profile add github:mikuri12/my-lazy-nixos-pkgs#cmuspp
+```
+### If you want to use flakes:
+
+```
+inputs = {
+my-pkgs.url = "github:mikuri12/my-lazy-nixos-pkgs";
+
+}; 
+```
+```
+{ inputs, pkgs, system, ... }:
+{
+environment.systemPackages = [
+inputs.my-pkgs.packages.${system}.cmuspp
+
+];
+
+}
+```
+
+---
 
 ## Controls
 
