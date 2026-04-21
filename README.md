@@ -44,7 +44,7 @@ Solo necesitas un compilador C++ y `libsndfile` (y ALSA en Linux).
 *   **Ubuntu / Debian:** `sudo apt install g++ libsndfile1-dev libasound2-dev`
 *   **Arch Linux:** `sudo pacman -S gcc libsndfile alsa-lib`
 *   **macOS:** `brew install libsndfile` (requiere Homebrew)
-
+  
 ### 2. Compilar
 
 Clona el repositorio y usa el script de auto-compilación incluido:
@@ -58,6 +58,31 @@ chmod +x bootstrap.sh
 
 # ¡Ejecutar!
 ./cmuspp
+```
+
+---
+
+## Para NIXOS  
+
+### Ejuecuta este comando:
+
+```
+nix profile add github:mikuri12/my-lazy-nixos-pkgs#cmuspp
+```
+### si quieres usar flakes:
+
+```
+inputs = {
+  my-pkgs.url = "github:mikuri12/my-lazy-nixos-pkgs";
+};   
+```
+```
+{ inputs, pkgs, system, ... }:
+{
+  environment.systemPackages = [
+    inputs.my-pkgs.packages.${system}.cmuspp
+  ];
+}
 ```
 
 ---
