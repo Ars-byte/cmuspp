@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Espresso Cream theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Espresso Cream">
+  <fg0  r="237" g="224" b="212"/>
+  <fg1  r="181" g="164" b="150"/>
+  <fg2  r="237" g="224" b="212"/>
+  <fg3  r="92" g="71" b="56"/>
+
+  <acc  r="226" g="149" b="120"/>
+  <warn r="201" g="122" b="122"/>
+
+  <bghdr  bgr="44" bgg="30" bgb="19" fgr="226" fgg="149" fgb="120"/>
+  <bgsel  bgr="44" bgg="30" bgb="19" fgr="237" fgg="224" fgb="212"/>
+  <bgplay bgr="26" bgg="18" bgb="11" fgr="226" fgg="149" fgb="120"/>
+  <bgstat bgr="26" bgg="18" bgb="11" fgr="181" fgg="164" fgb="150"/>
+</theme>

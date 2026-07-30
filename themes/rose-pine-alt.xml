@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rose Pine Alt theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Rose Pine Alt">
+  <fg0  r="224" g="222" b="244"/>
+  <fg1  r="144" g="140" b="170"/>
+  <fg2  r="224" g="222" b="244"/>
+  <fg3  r="64" g="61" b="82"/>
+
+  <acc  r="196" g="167" b="231"/>
+  <warn r="235" g="111" b="146"/>
+
+  <bghdr  bgr="38" bgg="35" bgb="58" fgr="196" fgg="167" fgb="231"/>
+  <bgsel  bgr="38" bgg="35" bgb="58" fgr="224" fgg="222" fgb="244"/>
+  <bgplay bgr="25" bgg="23" bgb="36" fgr="196" fgg="167" fgb="231"/>
+  <bgstat bgr="25" bgg="23" bgb="36" fgr="144" fgg="140" fgb="170"/>
+</theme>

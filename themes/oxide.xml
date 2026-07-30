@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Oxide theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Oxide">
+  <fg0  r="230" g="219" b="211"/>
+  <fg1  r="184" g="172" b="162"/>
+  <fg2  r="230" g="219" b="211"/>
+  <fg3  r="62" g="53" b="50"/>
+
+  <acc  r="184" g="90" b="48"/>
+  <warn r="194" g="93" b="78"/>
+
+  <bghdr  bgr="46" bgg="38" bgb="35" fgr="184" fgg="90" fgb="48"/>
+  <bgsel  bgr="46" bgg="38" bgb="35" fgr="230" fgg="219" fgb="211"/>
+  <bgplay bgr="35" bgg="29" bgb="27" fgr="184" fgg="90" fgb="48"/>
+  <bgstat bgr="35" bgg="29" bgb="27" fgr="184" fgg="172" fgb="162"/>
+</theme>

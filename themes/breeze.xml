@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Breeze theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Breeze">
+  <fg0  r="252" g="252" b="252"/>
+  <fg1  r="161" g="169" b="177"/>
+  <fg2  r="252" g="252" b="252"/>
+  <fg3  r="112" g="125" b="138"/>
+
+  <acc  r="61" g="174" b="233"/>
+  <warn r="218" g="68" b="83"/>
+
+  <bghdr  bgr="41" bgg="45" bgb="50" fgr="61" fgg="174" fgb="233"/>
+  <bgsel  bgr="41" bgg="45" bgb="50" fgr="252" fgg="252" fgb="252"/>
+  <bgplay bgr="32" bgg="34" bgb="36" fgr="61" fgg="174" fgb="233"/>
+  <bgstat bgr="32" bgg="34" bgb="36" fgr="161" fgg="169" fgb="177"/>
+</theme>

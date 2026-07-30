@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Oxocarbon theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Oxocarbon">
+  <fg0  r="242" g="244" b="248"/>
+  <fg1  r="221" g="225" b="230"/>
+  <fg2  r="242" g="244" b="248"/>
+  <fg3  r="82" g="82" b="82"/>
+
+  <acc  r="51" g="177" b="255"/>
+  <warn r="238" g="83" b="150"/>
+
+  <bghdr  bgr="38" bgg="38" bgb="38" fgr="51" fgg="177" fgb="255"/>
+  <bgsel  bgr="38" bgg="38" bgb="38" fgr="242" fgg="244" fgb="248"/>
+  <bgplay bgr="22" bgg="22" bgb="22" fgr="51" fgg="177" fgb="255"/>
+  <bgstat bgr="22" bgg="22" bgb="22" fgr="221" fgg="225" fgb="230"/>
+</theme>

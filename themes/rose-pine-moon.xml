@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rose Pine Moon theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Rose Pine Moon">
+  <fg0  r="224" g="222" b="244"/>
+  <fg1  r="144" g="140" b="170"/>
+  <fg2  r="224" g="222" b="244"/>
+  <fg3  r="68" g="65" b="90"/>
+
+  <acc  r="234" g="154" b="151"/>
+  <warn r="235" g="111" b="146"/>
+
+  <bghdr  bgr="57" bgg="53" bgb="82" fgr="234" fgg="154" fgb="151"/>
+  <bgsel  bgr="57" bgg="53" bgb="82" fgr="224" fgg="222" fgb="244"/>
+  <bgplay bgr="35" bgg="33" bgb="54" fgr="234" fgg="154" fgb="151"/>
+  <bgstat bgr="35" bgg="33" bgb="54" fgr="144" fgg="140" fgb="170"/>
+</theme>

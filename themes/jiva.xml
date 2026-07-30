@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Jiva theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Jiva">
+  <fg0  r="229" g="229" b="216"/>
+  <fg1  r="229" g="229" b="216"/>
+  <fg2  r="229" g="229" b="216"/>
+  <fg3  r="106" g="105" b="110"/>
+
+  <acc  r="237" g="221" b="142"/>
+  <warn r="229" g="108" b="108"/>
+
+  <bghdr  bgr="61" bgg="59" bgb="67" fgr="237" fgg="221" fgb="142"/>
+  <bgsel  bgr="61" bgg="59" bgb="67" fgr="229" fgg="229" fgb="216"/>
+  <bgplay bgr="45" bgg="43" bgb="51" fgr="237" fgg="221" fgb="142"/>
+  <bgstat bgr="45" bgg="43" bgb="51" fgr="229" fgg="229" fgb="216"/>
+</theme>

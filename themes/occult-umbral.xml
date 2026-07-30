@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Occult Umbral theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Occult Umbral">
+  <fg0  r="228" g="222" b="210"/>
+  <fg1  r="242" g="234" b="223"/>
+  <fg2  r="228" g="222" b="210"/>
+  <fg3  r="58" g="58" b="74"/>
+
+  <acc  r="139" g="46" b="46"/>
+  <warn r="194" g="91" b="91"/>
+
+  <bghdr  bgr="20" bgg="20" bgb="30" fgr="139" fgg="46" fgb="46"/>
+  <bgsel  bgr="20" bgg="20" bgb="30" fgr="228" fgg="222" fgb="210"/>
+  <bgplay bgr="10" bgg="10" bgb="18" fgr="139" fgg="46" fgb="46"/>
+  <bgstat bgr="10" bgg="10" bgb="18" fgr="242" fgg="234" fgb="223"/>
+</theme>

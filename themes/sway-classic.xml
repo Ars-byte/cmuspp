@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sway Classic theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Sway Classic">
+  <fg0  r="240" g="240" b="240"/>
+  <fg1  r="136" g="136" b="136"/>
+  <fg2  r="240" g="240" b="240"/>
+  <fg3  r="72" g="78" b="80"/>
+
+  <acc  r="76" g="120" b="153"/>
+  <warn r="144" g="0" b="0"/>
+
+  <bghdr  bgr="51" bgg="51" bgb="51" fgr="76" fgg="120" fgb="153"/>
+  <bgsel  bgr="51" bgg="51" bgb="51" fgr="240" fgg="240" fgb="240"/>
+  <bgplay bgr="34" bgg="34" bgb="34" fgr="76" fgg="120" fgb="153"/>
+  <bgstat bgr="34" bgg="34" bgb="34" fgr="136" fgg="136" fgb="136"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Catppuccin Mocha Pink theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Catppuccin Mocha Pink">
+  <fg0  r="205" g="214" b="244"/>
+  <fg1  r="163" g="180" b="235"/>
+  <fg2  r="205" g="214" b="244"/>
+  <fg3  r="76" g="79" b="105"/>
+
+  <acc  r="245" g="194" b="231"/>
+  <warn r="243" g="139" b="168"/>
+
+  <bghdr  bgr="49" bgg="50" bgb="68" fgr="245" fgg="194" fgb="231"/>
+  <bgsel  bgr="49" bgg="50" bgb="68" fgr="205" fgg="214" fgb="244"/>
+  <bgplay bgr="30" bgg="30" bgb="46" fgr="245" fgg="194" fgb="231"/>
+  <bgstat bgr="30" bgg="30" bgb="46" fgr="163" fgg="180" fgb="235"/>
+</theme>

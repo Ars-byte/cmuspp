@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Matecito theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Matecito">
+  <fg0  r="211" g="205" b="195"/>
+  <fg1  r="157" g="164" b="154"/>
+  <fg2  r="211" g="205" b="195"/>
+  <fg3  r="74" g="83" b="77"/>
+
+  <acc  r="141" g="163" b="131"/>
+  <warn r="194" g="121" b="121"/>
+
+  <bghdr  bgr="39" bgg="46" bgb="42" fgr="141" fgg="163" fgb="131"/>
+  <bgsel  bgr="39" bgg="46" bgb="42" fgr="211" fgg="205" fgb="195"/>
+  <bgplay bgr="30" bgg="35" bgb="32" fgr="141" fgg="163" fgb="131"/>
+  <bgstat bgr="30" bgg="35" bgb="32" fgr="157" fgg="164" fgb="154"/>
+</theme>

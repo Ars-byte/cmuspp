@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Creamy Forest theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Creamy Forest">
+  <fg0  r="244" g="246" b="235"/>
+  <fg1  r="162" g="176" b="141"/>
+  <fg2  r="244" g="246" b="235"/>
+  <fg3  r="52" g="55" b="48"/>
+
+  <acc  r="162" g="176" b="141"/>
+  <warn r="206" g="122" b="113"/>
+
+  <bghdr  bgr="37" bgg="39" bgb="34" fgr="162" fgg="176" fgb="141"/>
+  <bgsel  bgr="37" bgg="39" bgb="34" fgr="244" fgg="246" fgb="235"/>
+  <bgplay bgr="28" bgg="30" bgb="26" fgr="162" fgg="176" fgb="141"/>
+  <bgstat bgr="28" bgg="30" bgb="26" fgr="162" fgg="176" fgb="141"/>
+</theme>

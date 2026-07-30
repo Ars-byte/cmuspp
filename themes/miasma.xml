@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Miasma theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Miasma">
+  <fg0  r="194" g="194" b="176"/>
+  <fg1  r="201" g="165" b="84"/>
+  <fg2  r="194" g="194" b="176"/>
+  <fg3  r="102" g="102" b="102"/>
+
+  <acc  r="201" g="165" b="84"/>
+  <warn r="179" g="109" b="67"/>
+
+  <bghdr  bgr="42" bgg="42" bgb="42" fgr="201" fgg="165" fgb="84"/>
+  <bgsel  bgr="42" bgg="42" bgb="42" fgr="194" fgg="194" fgb="176"/>
+  <bgplay bgr="34" bgg="34" bgb="34" fgr="201" fgg="165" fgb="84"/>
+  <bgstat bgr="34" bgg="34" bgb="34" fgr="201" fgg="165" fgb="84"/>
+</theme>

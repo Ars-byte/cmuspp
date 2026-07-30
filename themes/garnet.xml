@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Garnet theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Garnet">
+  <fg0  r="232" g="224" b="224"/>
+  <fg1  r="196" g="188" b="188"/>
+  <fg2  r="232" g="224" b="224"/>
+  <fg3  r="42" g="36" b="36"/>
+
+  <acc  r="153" g="0" b="0"/>
+  <warn r="214" g="69" b="69"/>
+
+  <bghdr  bgr="24" bgg="22" bgb="22" fgr="153" fgg="0" fgb="0"/>
+  <bgsel  bgr="24" bgg="22" bgb="22" fgr="232" fgg="224" fgb="224"/>
+  <bgplay bgr="18" bgg="18" bgb="18" fgr="153" fgg="0" fgb="0"/>
+  <bgstat bgr="18" bgg="18" bgb="18" fgr="196" fgg="188" fgb="188"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Everforest Material theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Everforest Material">
+  <fg0  r="211" g="198" b="170"/>
+  <fg1  r="211" g="198" b="170"/>
+  <fg2  r="211" g="198" b="170"/>
+  <fg3  r="65" g="75" b="80"/>
+
+  <acc  r="167" g="192" b="128"/>
+  <warn r="230" g="126" b="128"/>
+
+  <bghdr  bgr="32" bgg="32" bgb="32" fgr="167" fgg="192" fgb="128"/>
+  <bgsel  bgr="32" bgg="32" bgb="32" fgr="211" fgg="198" fgb="170"/>
+  <bgplay bgr="22" bgg="22" bgb="22" fgr="167" fgg="192" fgb="128"/>
+  <bgstat bgr="22" bgg="22" bgb="22" fgr="211" fgg="198" fgb="170"/>
+</theme>

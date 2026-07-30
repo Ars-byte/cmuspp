@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Murata theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Murata">
+  <fg0  r="205" g="197" b="189"/>
+  <fg1  r="166" g="157" b="150"/>
+  <fg2  r="205" g="197" b="189"/>
+  <fg3  r="90" g="91" b="92"/>
+
+  <acc  r="219" g="109" b="109"/>
+  <warn r="219" g="109" b="109"/>
+
+  <bghdr  bgr="37" bgg="38" bgb="39" fgr="219" fgg="109" fgb="109"/>
+  <bgsel  bgr="37" bgg="38" bgb="39" fgr="205" fgg="197" fgb="189"/>
+  <bgplay bgr="26" bgg="27" bgb="28" fgr="219" fgg="109" fgb="109"/>
+  <bgstat bgr="26" bgg="27" bgb="28" fgr="166" fgg="157" fgb="150"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Cyberpunk theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Cyberpunk">
+  <fg0  r="92" g="138" b="196"/>
+  <fg1  r="155" g="107" b="193"/>
+  <fg2  r="92" g="138" b="196"/>
+  <fg3  r="69" g="160" b="214"/>
+
+  <acc  r="196" g="168" b="46"/>
+  <warn r="179" g="45" b="45"/>
+
+  <bghdr  bgr="17" bgg="21" bgb="29" fgr="196" fgg="168" fgb="46"/>
+  <bgsel  bgr="17" bgg="21" bgb="29" fgr="92" fgg="138" fgb="196"/>
+  <bgplay bgr="12" bgg="16" bgb="23" fgr="196" fgg="168" fgb="46"/>
+  <bgstat bgr="12" bgg="16" bgb="23" fgr="155" fgg="107" fgb="193"/>
+</theme>

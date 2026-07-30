@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Vesper theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Vesper">
+  <fg0  r="255" g="255" b="255"/>
+  <fg1  r="160" g="160" b="160"/>
+  <fg2  r="255" g="255" b="255"/>
+  <fg3  r="80" g="80" b="80"/>
+
+  <acc  r="255" g="199" b="153"/>
+  <warn r="255" g="128" b="128"/>
+
+  <bghdr  bgr="28" bgg="28" bgb="28" fgr="255" fgg="199" fgb="153"/>
+  <bgsel  bgr="28" bgg="28" bgb="28" fgr="255" fgg="255" fgb="255"/>
+  <bgplay bgr="12" bgg="12" bgb="12" fgr="255" fgg="199" fgb="153"/>
+  <bgstat bgr="12" bgg="12" bgb="12" fgr="160" fgg="160" fgb="160"/>
+</theme>

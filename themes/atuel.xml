@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Atuel theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Atuel">
+  <fg0  r="225" g="231" b="245"/>
+  <fg1  r="153" g="182" b="242"/>
+  <fg2  r="225" g="231" b="245"/>
+  <fg3  r="33" g="44" b="77"/>
+
+  <acc  r="153" g="182" b="242"/>
+  <warn r="217" g="136" b="134"/>
+
+  <bghdr  bgr="15" bgg="27" bgb="64" fgr="153" fgg="182" fgb="242"/>
+  <bgsel  bgr="15" bgg="27" bgb="64" fgr="225" fgg="231" fgb="245"/>
+  <bgplay bgr="10" bgg="17" bgb="38" fgr="153" fgg="182" fgb="242"/>
+  <bgstat bgr="10" bgg="17" bgb="38" fgr="153" fgg="182" fgb="242"/>
+</theme>

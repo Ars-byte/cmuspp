@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Flexoki theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Flexoki">
+  <fg0  r="206" g="205" b="195"/>
+  <fg1  r="135" g="133" b="128"/>
+  <fg2  r="206" g="205" b="195"/>
+  <fg3  r="40" g="39" b="38"/>
+
+  <acc  r="135" g="154" b="57"/>
+  <warn r="209" g="77" b="65"/>
+
+  <bghdr  bgr="28" bgg="27" bgb="26" fgr="135" fgg="154" fgb="57"/>
+  <bgsel  bgr="28" bgg="27" bgb="26" fgr="206" fgg="205" fgb="195"/>
+  <bgplay bgr="16" bgg="15" bgb="15" fgr="135" fgg="154" fgb="57"/>
+  <bgstat bgr="16" bgg="15" bgb="15" fgr="135" fgg="133" fgb="128"/>
+</theme>

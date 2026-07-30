@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Tokyo Night Storm theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Tokyo Night Storm">
+  <fg0  r="192" g="202" b="245"/>
+  <fg1  r="120" g="124" b="153"/>
+  <fg2  r="192" g="202" b="245"/>
+  <fg3  r="86" g="95" b="137"/>
+
+  <acc  r="122" g="162" b="247"/>
+  <warn r="247" g="118" b="142"/>
+
+  <bghdr  bgr="31" bgg="35" bgb="53" fgr="122" fgg="162" fgb="247"/>
+  <bgsel  bgr="31" bgg="35" bgb="53" fgr="192" fgg="202" fgb="245"/>
+  <bgplay bgr="36" bgg="40" bgb="59" fgr="122" fgg="162" fgb="247"/>
+  <bgstat bgr="36" bgg="40" bgb="59" fgr="120" fgg="124" fgb="153"/>
+</theme>

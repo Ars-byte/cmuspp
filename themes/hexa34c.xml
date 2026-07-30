@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hexa34C theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Hexa34C">
+  <fg0  r="223" g="228" b="220"/>
+  <fg1  r="193" g="201" b="190"/>
+  <fg2  r="223" g="228" b="220"/>
+  <fg3  r="139" g="147" b="137"/>
+
+  <acc  r="154" g="212" b="161"/>
+  <warn r="255" g="180" b="171"/>
+
+  <bghdr  bgr="16" bgg="21" bgb="16" fgr="154" fgg="212" fgb="161"/>
+  <bgsel  bgr="16" bgg="21" bgb="16" fgr="223" fgg="228" fgb="220"/>
+  <bgplay bgr="16" bgg="21" bgb="16" fgr="154" fgg="212" fgb="161"/>
+  <bgstat bgr="16" bgg="21" bgb="16" fgr="193" fgg="201" fgb="190"/>
+</theme>

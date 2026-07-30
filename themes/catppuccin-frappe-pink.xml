@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Catppuccin Frappe Pink theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Catppuccin Frappe Pink">
+  <fg0  r="198" g="208" b="245"/>
+  <fg1  r="165" g="173" b="206"/>
+  <fg2  r="198" g="208" b="245"/>
+  <fg3  r="115" g="121" b="148"/>
+
+  <acc  r="244" g="184" b="228"/>
+  <warn r="231" g="130" b="132"/>
+
+  <bghdr  bgr="65" bgg="69" bgb="89" fgr="244" fgg="184" fgb="228"/>
+  <bgsel  bgr="65" bgg="69" bgb="89" fgr="198" fgg="208" fgb="245"/>
+  <bgplay bgr="48" bgg="52" bgb="70" fgr="244" fgg="184" fgb="228"/>
+  <bgstat bgr="48" bgg="52" bgb="70" fgr="165" fgg="173" fgb="206"/>
+</theme>

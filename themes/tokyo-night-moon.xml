@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Tokyo Night Moon theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Tokyo Night Moon">
+  <fg0  r="169" g="177" b="214"/>
+  <fg1  r="192" g="202" b="245"/>
+  <fg2  r="169" g="177" b="214"/>
+  <fg3  r="75" g="81" b="122"/>
+
+  <acc  r="122" g="136" b="207"/>
+  <warn r="247" g="118" b="142"/>
+
+  <bghdr  bgr="44" bgg="49" bgb="74" fgr="122" fgg="136" fgb="207"/>
+  <bgsel  bgr="44" bgg="49" bgb="74" fgr="169" fgg="177" fgb="214"/>
+  <bgplay bgr="31" bgg="35" bgb="53" fgr="122" fgg="136" fgb="207"/>
+  <bgstat bgr="31" bgg="35" bgb="53" fgr="192" fgg="202" fgb="245"/>
+</theme>

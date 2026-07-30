@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Doomed theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Doomed">
+  <fg0  r="255" g="252" b="248"/>
+  <fg1  r="187" g="194" b="207"/>
+  <fg2  r="255" g="252" b="248"/>
+  <fg3  r="63" g="68" b="74"/>
+
+  <acc  r="81" g="175" b="239"/>
+  <warn r="255" g="107" b="90"/>
+
+  <bghdr  bgr="40" bgg="44" bgb="52" fgr="81" fgg="175" fgb="239"/>
+  <bgsel  bgr="40" bgg="44" bgb="52" fgr="255" fgg="252" fgb="248"/>
+  <bgplay bgr="28" bgg="30" bgb="30" fgr="81" fgg="175" fgb="239"/>
+  <bgstat bgr="28" bgg="30" bgb="30" fgr="187" fgg="194" fgb="207"/>
+</theme>

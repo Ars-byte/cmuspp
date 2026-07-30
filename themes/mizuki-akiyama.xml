@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Mizuki-Akiyama theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Mizuki-Akiyama">
+  <fg0  r="238" g="231" b="240"/>
+  <fg1  r="200" g="185" b="202"/>
+  <fg2  r="238" g="231" b="240"/>
+  <fg3  r="77" g="70" b="92"/>
+
+  <acc  r="230" g="166" b="200"/>
+  <warn r="240" g="138" b="155"/>
+
+  <bghdr  bgr="29" bgg="26" bgb="42" fgr="230" fgg="166" fgb="200"/>
+  <bgsel  bgr="29" bgg="26" bgb="42" fgr="238" fgg="231" fgb="240"/>
+  <bgplay bgr="16" bgg="17" bgb="27" fgr="230" fgg="166" fgb="200"/>
+  <bgstat bgr="16" bgg="17" bgb="27" fgr="200" fgg="185" fgb="202"/>
+</theme>

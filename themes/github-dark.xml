@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GitHub Dark theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="GitHub Dark">
+  <fg0  r="201" g="209" b="217"/>
+  <fg1  r="139" g="148" b="158"/>
+  <fg2  r="201" g="209" b="217"/>
+  <fg3  r="48" g="54" b="61"/>
+
+  <acc  r="88" g="166" b="255"/>
+  <warn r="248" g="81" b="73"/>
+
+  <bghdr  bgr="22" bgg="27" bgb="34" fgr="88" fgg="166" fgb="255"/>
+  <bgsel  bgr="22" bgg="27" bgb="34" fgr="201" fgg="209" fgb="217"/>
+  <bgplay bgr="1" bgg="4" bgb="9" fgr="88" fgg="166" fgb="255"/>
+  <bgstat bgr="1" bgg="4" bgb="9" fgr="139" fgg="148" fgb="158"/>
+</theme>

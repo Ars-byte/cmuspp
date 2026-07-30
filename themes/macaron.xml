@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Macaron theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Macaron">
+  <fg0  r="212" g="212" b="212"/>
+  <fg1  r="212" g="212" b="212"/>
+  <fg2  r="212" g="212" b="212"/>
+  <fg3  r="58" g="58" b="61"/>
+
+  <acc  r="229" g="180" b="226"/>
+  <warn r="229" g="154" b="158"/>
+
+  <bghdr  bgr="36" bgg="36" bgb="38" fgr="229" fgg="180" fgb="226"/>
+  <bgsel  bgr="36" bgg="36" bgb="38" fgr="212" fgg="212" fgb="212"/>
+  <bgplay bgr="24" bgg="24" bgb="26" fgr="229" fgg="180" fgb="226"/>
+  <bgstat bgr="24" bgg="24" bgb="26" fgr="212" fgg="212" fgb="212"/>
+</theme>

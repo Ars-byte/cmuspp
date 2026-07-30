@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Catppuccin Frappe Sapphire.json theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Catppuccin Frappe Sapphire.json">
+  <fg0  r="198" g="208" b="245"/>
+  <fg1  r="165" g="173" b="206"/>
+  <fg2  r="198" g="208" b="245"/>
+  <fg3  r="115" g="121" b="148"/>
+
+  <acc  r="133" g="193" b="220"/>
+  <warn r="231" g="130" b="132"/>
+
+  <bghdr  bgr="65" bgg="69" bgb="89" fgr="133" fgg="193" fgb="220"/>
+  <bgsel  bgr="65" bgg="69" bgb="89" fgr="198" fgg="208" fgb="245"/>
+  <bgplay bgr="48" bgg="52" bgb="70" fgr="133" fgg="193" fgb="220"/>
+  <bgstat bgr="48" bgg="52" bgb="70" fgr="165" fgg="173" fgb="206"/>
+</theme>

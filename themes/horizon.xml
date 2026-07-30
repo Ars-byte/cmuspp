@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Horizon theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Horizon">
+  <fg0  r="253" g="240" b="237"/>
+  <fg1  r="108" g="111" b="147"/>
+  <fg2  r="253" g="240" b="237"/>
+  <fg3  r="46" g="48" b="62"/>
+
+  <acc  r="37" g="178" b="188"/>
+  <warn r="233" g="86" b="120"/>
+
+  <bghdr  bgr="35" bgg="37" bgb="48" fgr="37" fgg="178" fgb="188"/>
+  <bgsel  bgr="35" bgg="37" bgb="48" fgr="253" fgg="240" fgb="237"/>
+  <bgplay bgr="26" bgg="28" bgb="35" fgr="37" fgg="178" fgb="188"/>
+  <bgstat bgr="26" bgg="28" bgb="35" fgr="108" fgg="111" fgb="147"/>
+</theme>

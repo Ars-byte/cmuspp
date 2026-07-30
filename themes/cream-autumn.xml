@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Cream Autumn theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Cream Autumn">
+  <fg0  r="220" g="216" b="205"/>
+  <fg1  r="191" g="174" b="155"/>
+  <fg2  r="220" g="216" b="205"/>
+  <fg3  r="58" g="48" b="40"/>
+
+  <acc  r="229" g="199" b="153"/>
+  <warn r="207" g="118" b="124"/>
+
+  <bghdr  bgr="35" bgg="30" bgb="26" fgr="229" fgg="199" fgb="153"/>
+  <bgsel  bgr="35" bgg="30" bgb="26" fgr="220" fgg="216" fgb="205"/>
+  <bgplay bgr="22" bgg="19" bgb="17" fgr="229" fgg="199" fgb="153"/>
+  <bgstat bgr="22" bgg="19" bgb="17" fgr="191" fgg="174" fgb="155"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Oasis Abyss theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Oasis Abyss">
+  <fg0  r="255" g="218" b="204"/>
+  <fg1  r="240" g="235" b="230"/>
+  <fg2  r="255" g="218" b="204"/>
+  <fg3  r="94" g="81" b="72"/>
+
+  <acc  r="208" g="102" b="102"/>
+  <warn r="255" g="160" b="160"/>
+
+  <bghdr  bgr="8" bgg="8" bgb="8" fgr="208" fgg="102" fgb="102"/>
+  <bgsel  bgr="8" bgg="8" bgb="8" fgr="255" fgg="218" fgb="204"/>
+  <bgplay bgr="26" bgg="26" bgb="26" fgr="208" fgg="102" fgb="102"/>
+  <bgstat bgr="26" bgg="26" bgb="26" fgr="240" fgg="235" fgb="230"/>
+</theme>

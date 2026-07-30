@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Everdeer theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Everdeer">
+  <fg0  r="244" g="222" b="217"/>
+  <fg1  r="223" g="192" b="184"/>
+  <fg2  r="244" g="222" b="217"/>
+  <fg3  r="88" g="66" b="60"/>
+
+  <acc  r="255" g="180" b="163"/>
+  <warn r="255" g="180" b="171"/>
+
+  <bghdr  bgr="41" bgg="29" bgb="26" fgr="255" fgg="180" fgb="163"/>
+  <bgsel  bgr="41" bgg="29" bgb="26" fgr="244" fgg="222" fgb="217"/>
+  <bgplay bgr="28" bgg="17" bgb="14" fgr="255" fgg="180" fgb="163"/>
+  <bgstat bgr="28" bgg="17" bgb="14" fgr="223" fgg="192" fgb="184"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Gruber Darker theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Gruber Darker">
+  <fg0  r="228" g="228" b="239"/>
+  <fg1  r="149" g="169" b="159"/>
+  <fg2  r="228" g="228" b="239"/>
+  <fg3  r="72" g="72" b="72"/>
+
+  <acc  r="255" g="221" b="51"/>
+  <warn r="244" g="56" b="65"/>
+
+  <bghdr  bgr="40" bgg="40" bgb="40" fgr="255" fgg="221" fgb="51"/>
+  <bgsel  bgr="40" bgg="40" bgb="40" fgr="228" fgg="228" fgb="239"/>
+  <bgplay bgr="24" bgg="24" bgb="24" fgr="255" fgg="221" fgb="51"/>
+  <bgstat bgr="24" bgg="24" bgb="24" fgr="149" fgg="169" fgb="159"/>
+</theme>

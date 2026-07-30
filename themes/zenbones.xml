@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Zenbones theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Zenbones">
+  <fg0  r="180" g="189" b="195"/>
+  <fg1  r="136" g="143" b="148"/>
+  <fg2  r="180" g="189" b="195"/>
+  <fg3  r="136" g="143" b="148"/>
+
+  <acc  r="180" g="189" b="195"/>
+  <warn r="222" g="110" b="124"/>
+
+  <bghdr  bgr="64" bgg="56" bgb="51" fgr="180" fgg="189" fgb="195"/>
+  <bgsel  bgr="64" bgg="56" bgb="51" fgr="180" fgg="189" fgb="195"/>
+  <bgplay bgr="28" bgg="25" bgb="23" fgr="180" fgg="189" fgb="195"/>
+  <bgstat bgr="28" bgg="25" bgb="23" fgr="136" fgg="143" fgb="148"/>
+</theme>

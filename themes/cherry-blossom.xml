@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Cherry Blossom theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Cherry Blossom">
+  <fg0  r="243" g="199" b="215"/>
+  <fg1  r="239" g="220" b="232"/>
+  <fg2  r="243" g="199" b="215"/>
+  <fg3  r="92" g="26" b="40"/>
+
+  <acc  r="242" g="193" b="212"/>
+  <warn r="236" g="138" b="146"/>
+
+  <bghdr  bgr="77" bgg="55" bgb="69" fgr="242" fgg="193" fgb="212"/>
+  <bgsel  bgr="77" bgg="55" bgb="69" fgr="243" fgg="199" fgb="215"/>
+  <bgplay bgr="42" bgg="25" bgb="34" fgr="242" fgg="193" fgb="212"/>
+  <bgstat bgr="42" bgg="25" bgb="34" fgr="239" fgg="220" fgb="232"/>
+</theme>

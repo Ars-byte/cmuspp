@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Rosey AMOLED theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Rosey AMOLED">
+  <fg0  r="255" g="224" b="235"/>
+  <fg1  r="255" g="140" b="179"/>
+  <fg2  r="255" g="224" b="235"/>
+  <fg3  r="90" g="63" b="77"/>
+
+  <acc  r="255" g="140" b="179"/>
+  <warn r="255" g="153" b="184"/>
+
+  <bghdr  bgr="26" bgg="15" bgb="22" fgr="255" fgg="140" fgb="179"/>
+  <bgsel  bgr="26" bgg="15" bgb="22" fgr="255" fgg="224" fgb="235"/>
+  <bgplay bgr="0" bgg="0" bgb="0" fgr="255" fgg="140" fgb="179"/>
+  <bgstat bgr="0" bgg="0" bgb="0" fgr="255" fgg="140" fgb="179"/>
+</theme>

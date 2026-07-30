@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Lilac AMOLED theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Lilac AMOLED">
+  <fg0  r="232" g="216" b="255"/>
+  <fg1  r="181" g="143" b="255"/>
+  <fg2  r="232" g="216" b="255"/>
+  <fg3  r="76" g="58" b="112"/>
+
+  <acc  r="181" g="143" b="255"/>
+  <warn r="255" g="111" b="155"/>
+
+  <bghdr  bgr="17" bgg="13" bgb="26" fgr="181" fgg="143" fgb="255"/>
+  <bgsel  bgr="17" bgg="13" bgb="26" fgr="232" fgg="216" fgb="255"/>
+  <bgplay bgr="0" bgg="0" bgb="0" fgr="181" fgg="143" fgb="255"/>
+  <bgstat bgr="0" bgg="0" bgb="0" fgr="181" fgg="143" fgb="255"/>
+</theme>

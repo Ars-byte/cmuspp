@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ADW theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="ADW">
+  <fg0  r="255" g="255" b="255"/>
+  <fg1  r="255" g="255" b="255"/>
+  <fg2  r="255" g="255" b="255"/>
+  <fg3  r="61" g="56" b="70"/>
+
+  <acc  r="53" g="132" b="228"/>
+  <warn r="192" g="28" b="40"/>
+
+  <bghdr  bgr="30" bgg="30" bgb="30" fgr="53" fgg="132" fgb="228"/>
+  <bgsel  bgr="30" bgg="30" bgb="30" fgr="255" fgg="255" fgb="255"/>
+  <bgplay bgr="36" bgg="36" bgb="36" fgr="53" fgg="132" fgb="228"/>
+  <bgstat bgr="36" bgg="36" bgb="36" fgr="255" fgg="255" fgb="255"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Solarized Osaka theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Solarized Osaka">
+  <fg0  r="131" g="147" b="149"/>
+  <fg1  r="99" g="121" b="129"/>
+  <fg2  r="131" g="147" b="149"/>
+  <fg3  r="87" g="109" b="116"/>
+
+  <acc  r="41" g="162" b="152"/>
+  <warn r="219" g="48" b="45"/>
+
+  <bghdr  bgr="0" bgg="44" bgb="56" fgr="41" fgg="162" fgb="152"/>
+  <bgsel  bgr="0" bgg="44" bgb="56" fgr="131" fgg="147" fgb="149"/>
+  <bgplay bgr="0" bgg="20" bgb="25" fgr="41" fgg="162" fgb="152"/>
+  <bgstat bgr="0" bgg="20" bgb="25" fgr="99" fgg="121" fgb="129"/>
+</theme>

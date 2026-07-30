@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Osaka jade theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Osaka jade">
+  <fg0  r="166" g="181" b="177"/>
+  <fg1  r="153" g="168" b="164"/>
+  <fg2  r="166" g="181" b="177"/>
+  <fg3  r="27" g="99" b="82"/>
+
+  <acc  r="30" g="145" b="119"/>
+  <warn r="147" g="54" b="54"/>
+
+  <bghdr  bgr="15" bgg="37" bgb="31" fgr="30" fgg="145" fgb="119"/>
+  <bgsel  bgr="15" bgg="37" bgb="31" fgr="166" fgg="181" fgb="177"/>
+  <bgplay bgr="8" bgg="21" bgb="18" fgr="30" fgg="145" fgb="119"/>
+  <bgstat bgr="8" bgg="21" bgb="18" fgr="153" fgg="168" fgb="164"/>
+</theme>

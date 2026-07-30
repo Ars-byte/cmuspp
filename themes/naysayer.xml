@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NaySayer theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="NaySayer">
+  <fg0  r="209" g="184" b="151"/>
+  <fg1  r="193" g="209" b="227"/>
+  <fg2  r="209" g="184" b="151"/>
+  <fg3  r="18" g="99" b="103"/>
+
+  <acc  r="46" g="192" b="156"/>
+  <warn r="255" g="0" b="0"/>
+
+  <bghdr  bgr="11" bgg="51" bgb="53" fgr="46" fgg="192" fgb="156"/>
+  <bgsel  bgr="11" bgg="51" bgb="53" fgr="209" fgg="184" fgb="151"/>
+  <bgplay bgr="6" bgg="35" bgb="41" fgr="46" fgg="192" fgb="156"/>
+  <bgstat bgr="6" bgg="35" bgb="41" fgr="193" fgg="209" fgb="227"/>
+</theme>

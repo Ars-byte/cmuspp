@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Catppuccin Macchiato Rosewater theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Catppuccin Macchiato Rosewater">
+  <fg0  r="202" g="211" b="245"/>
+  <fg1  r="165" g="173" b="203"/>
+  <fg2  r="202" g="211" b="245"/>
+  <fg3  r="73" g="77" b="100"/>
+
+  <acc  r="244" g="219" b="214"/>
+  <warn r="237" g="135" b="150"/>
+
+  <bghdr  bgr="54" bgg="58" bgb="79" fgr="244" fgg="219" fgb="214"/>
+  <bgsel  bgr="54" bgg="58" bgb="79" fgr="202" fgg="211" fgb="245"/>
+  <bgplay bgr="36" bgg="39" bgb="58" fgr="244" fgg="219" fgb="214"/>
+  <bgstat bgr="36" bgg="39" bgb="58" fgr="165" fgg="173" fgb="203"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Kemuri theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Kemuri">
+  <fg0  r="229" g="222" b="201"/>
+  <fg1  r="229" g="222" b="201"/>
+  <fg2  r="229" g="222" b="201"/>
+  <fg3  r="102" g="92" b="88"/>
+
+  <acc  r="203" g="145" b="104"/>
+  <warn r="198" g="104" b="93"/>
+
+  <bghdr  bgr="54" bgg="49" bgb="47" fgr="203" fgg="145" fgb="104"/>
+  <bgsel  bgr="54" bgg="49" bgb="47" fgr="229" fgg="222" fgb="201"/>
+  <bgplay bgr="36" bgg="33" bgb="32" fgr="203" fgg="145" fgb="104"/>
+  <bgstat bgr="36" bgg="33" bgb="32" fgr="229" fgg="222" fgb="201"/>
+</theme>

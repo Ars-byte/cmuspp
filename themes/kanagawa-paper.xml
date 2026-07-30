@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Kanagawa Paper theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Kanagawa Paper">
+  <fg0  r="220" g="215" b="186"/>
+  <fg1  r="200" g="192" b="147"/>
+  <fg2  r="220" g="215" b="186"/>
+  <fg3  r="67" g="89" b="101"/>
+
+  <acc  r="196" g="178" b="138"/>
+  <warn r="196" g="116" b="110"/>
+
+  <bghdr  bgr="42" bgg="42" bgb="55" fgr="196" fgg="178" fgb="138"/>
+  <bgsel  bgr="42" bgg="42" bgb="55" fgr="220" fgg="215" fgb="186"/>
+  <bgplay bgr="31" bgg="31" bgb="40" fgr="196" fgg="178" fgb="138"/>
+  <bgstat bgr="31" bgg="31" bgb="40" fgr="200" fgg="192" fgb="147"/>
+</theme>

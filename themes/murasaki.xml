@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Murasaki theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Murasaki">
+  <fg0  r="254" g="247" b="231"/>
+  <fg1  r="232" g="188" b="251"/>
+  <fg2  r="254" g="247" b="231"/>
+  <fg3  r="142" g="12" b="198"/>
+
+  <acc  r="232" g="188" b="251"/>
+  <warn r="232" g="14" b="79"/>
+
+  <bghdr  bgr="80" bgg="6" bgb="111" fgr="232" fgg="188" fgb="251"/>
+  <bgsel  bgr="80" bgg="6" bgb="111" fgr="254" fgg="247" fgb="231"/>
+  <bgplay bgr="48" bgg="4" bgb="67" fgr="232" fgg="188" fgb="251"/>
+  <bgstat bgr="48" bgg="4" bgb="67" fgr="232" fgg="188" fgb="251"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- One Dark Two theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="One Dark Two">
+  <fg0  r="201" g="204" b="211"/>
+  <fg1  r="120" g="196" b="206"/>
+  <fg2  r="201" g="204" b="211"/>
+  <fg3  r="57" g="62" b="71"/>
+
+  <acc  r="98" g="186" b="198"/>
+  <warn r="226" g="120" b="129"/>
+
+  <bghdr  bgr="40" bgg="44" bgb="52" fgr="98" fgg="186" fgb="198"/>
+  <bgsel  bgr="40" bgg="44" bgb="52" fgr="201" fgg="204" fgb="211"/>
+  <bgplay bgr="33" bgg="37" bgb="43" fgr="98" fgg="186" fgb="198"/>
+  <bgstat bgr="33" bgg="37" bgb="43" fgr="120" fgg="196" fgb="206"/>
+</theme>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Neon Surf theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Neon Surf">
+  <fg0  r="128" g="200" b="244"/>
+  <fg1  r="0" g="168" b="244"/>
+  <fg2  r="128" g="200" b="244"/>
+  <fg3  r="10" g="32" b="48"/>
+
+  <acc  r="0" g="168" b="244"/>
+  <warn r="183" g="78" b="144"/>
+
+  <bghdr  bgr="6" bgg="16" bgb="26" fgr="0" fgg="168" fgb="244"/>
+  <bgsel  bgr="6" bgg="16" bgb="26" fgr="128" fgg="200" fgb="244"/>
+  <bgplay bgr="0" bgg="0" bgb="0" fgr="0" fgg="168" fgb="244"/>
+  <bgstat bgr="0" bgg="0" bgb="0" fgr="0" fgg="168" fgb="244"/>
+</theme>

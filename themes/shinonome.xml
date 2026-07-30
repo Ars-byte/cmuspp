@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Shinonome theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Shinonome">
+  <fg0  r="235" g="207" b="178"/>
+  <fg1  r="235" g="207" b="178"/>
+  <fg2  r="235" g="207" b="178"/>
+  <fg3  r="66" g="75" b="84"/>
+
+  <acc  r="213" g="172" b="169"/>
+  <warn r="179" g="141" b="151"/>
+
+  <bghdr  bgr="45" bgg="51" bgb="57" fgr="213" fgg="172" fgb="169"/>
+  <bgsel  bgr="45" bgg="51" bgb="57" fgr="235" fgg="207" fgb="178"/>
+  <bgplay bgr="26" bgg="29" bgb="32" fgr="213" fgg="172" fgb="169"/>
+  <bgstat bgr="26" bgg="29" bgb="32" fgr="235" fgg="207" fgb="178"/>
+</theme>

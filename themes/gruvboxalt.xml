@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- GruvboxAlt theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="GruvboxAlt">
+  <fg0  r="251" g="241" b="199"/>
+  <fg1  r="235" g="219" b="178"/>
+  <fg2  r="251" g="241" b="199"/>
+  <fg3  r="87" g="81" b="78"/>
+
+  <acc  r="235" g="219" b="178"/>
+  <warn r="251" g="73" b="52"/>
+
+  <bghdr  bgr="60" bgg="56" bgb="54" fgr="235" fgg="219" fgb="178"/>
+  <bgsel  bgr="60" bgg="56" bgb="54" fgr="251" fgg="241" fgb="199"/>
+  <bgplay bgr="40" bgg="40" bgb="40" fgr="235" fgg="219" fgb="178"/>
+  <bgstat bgr="40" bgg="40" bgb="40" fgr="235" fgg="219" fgb="178"/>
+</theme>

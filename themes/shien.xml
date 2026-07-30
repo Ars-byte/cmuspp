@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Shien theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Shien">
+  <fg0  r="191" g="179" b="219"/>
+  <fg1  r="191" g="179" b="219"/>
+  <fg2  r="191" g="179" b="219"/>
+  <fg3  r="70" g="61" b="92"/>
+
+  <acc  r="155" g="139" b="193"/>
+  <warn r="184" g="122" b="135"/>
+
+  <bghdr  bgr="36" bgg="32" bgb="44" fgr="155" fgg="139" fgb="193"/>
+  <bgsel  bgr="36" bgg="32" bgb="44" fgr="191" fgg="179" fgb="219"/>
+  <bgplay bgr="21" bgg="19" bgb="27" fgr="155" fgg="139" fgb="193"/>
+  <bgstat bgr="21" bgg="19" bgb="27" fgr="191" fgg="179" fgb="219"/>
+</theme>

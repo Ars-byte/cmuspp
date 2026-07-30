@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Nord Aurora theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Nord Aurora">
+  <fg0  r="236" g="239" b="244"/>
+  <fg1  r="229" g="233" b="240"/>
+  <fg2  r="236" g="239" b="244"/>
+  <fg3  r="67" g="76" b="94"/>
+
+  <acc  r="180" g="142" b="173"/>
+  <warn r="191" g="97" b="106"/>
+
+  <bghdr  bgr="59" bgg="66" bgb="82" fgr="180" fgg="142" fgb="173"/>
+  <bgsel  bgr="59" bgg="66" bgb="82" fgr="236" fgg="239" fgb="244"/>
+  <bgplay bgr="46" bgg="52" bgb="64" fgr="180" fgg="142" fgb="173"/>
+  <bgstat bgr="46" bgg="52" bgb="64" fgr="229" fgg="233" fgb="240"/>
+</theme>

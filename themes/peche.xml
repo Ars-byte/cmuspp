@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Peche theme for CMUS++ (converted from Noctalia palette, dark variant) -->
+<theme name="Peche">
+  <fg0  r="171" g="188" b="196"/>
+  <fg1  r="219" g="226" b="230"/>
+  <fg2  r="171" g="188" b="196"/>
+  <fg3  r="33" g="43" b="48"/>
+
+  <acc  r="157" g="210" b="192"/>
+  <warn r="167" g="204" b="225"/>
+
+  <bghdr  bgr="25" bgg="32" bgb="36" fgr="157" fgg="210" fgb="192"/>
+  <bgsel  bgr="25" bgg="32" bgb="36" fgr="171" fgg="188" fgb="196"/>
+  <bgplay bgr="14" bgg="18" bgb="20" fgr="157" fgg="210" fgb="192"/>
+  <bgstat bgr="14" bgg="18" bgb="20" fgr="219" fgg="226" fgb="230"/>
+</theme>
