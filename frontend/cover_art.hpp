@@ -281,7 +281,7 @@ inline RawImg extract_mp3_cover(const std::string& path) {
         bool is_apic=(!v22&&fid=="APIC")||(v22&&fid=="PIC");
         if (is_apic && fsz>4) {
             const uint8_t* fp=p; size_t fl=fsz;
-            fp++; fl--;  
+            uint8_t enc=fp[0]; fp++; fl--;   // 0x00=ISO-8859-1, 0x01=UTF-16+BOM, 0x02=UTF-16BE, 0x03=UTF-8
             ImgFmt fmt=ImgFmt::NONE;
             if (v22) {
                 if (fl<3) goto next;
@@ -290,15 +290,25 @@ inline RawImg extract_mp3_cover(const std::string& path) {
                 if (se=="jpg"||se=="jpe") fmt=ImgFmt::JPEG;
                 else if (se=="png")       fmt=ImgFmt::PNG;
             } else {
+                // MIME type: null-terminated string
+                const uint8_t* mime_start=fp;
                 while (fl && *fp) { fp++; fl--; }
                 if (fl) { fp++; fl--; }
-                fmt=ImgFmt::JPEG;
+                fmt = mime_to_fmt(std::string((const char*)mime_start, fp-mime_start-1));
+                if (fmt == ImgFmt::NONE) fmt = ImgFmt::JPEG; // fallback
             }
-            { uint8_t pt=fp[0]; fp++; fl--;
-              if (fl && *fp==0) { fp++; fl--; }
-              else while (fl && *fp) { fp++; fl--; }
-              if (fl && *fp==0) { fp++; fl--; }
-              (void)pt;
+            { uint8_t pt=fp[0]; fp++; fl--; (void)pt; }
+            // Skip description based on encoding
+            if (enc==0x01 || enc==0x02) {
+                // UTF-16: 2 bytes per char, look for full null char (0x00 0x00)
+                while (fl>1) {
+                    if (fp[0]==0x00 && fp[1]==0x00) { fp+=2; fl-=2; break; }
+                    fp+=2; fl-=2;
+                }
+            } else {
+                // ISO-8859-1 or UTF-8: single null terminator
+                while (fl && *fp) { fp++; fl--; }
+                if (fl) { fp++; fl--; }
             }
             if (fl>4) { RawImg img=decode_image(fp,fl,fmt); if (!img.empty()) return img; }
         }
