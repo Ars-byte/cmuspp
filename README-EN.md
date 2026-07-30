@@ -17,8 +17,9 @@
 
 **Features:**
 *   **Formats:** MP3, FLAC, WAV, OGG, OPUS, AIFF.
+*   **Album art:** Extracts embedded covers from MP3, FLAC, OGG/OPUS + fallback to cover.jpg/png.
 *   **Cross-platform:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
-*   **Customizable:** 9 built-in themes + support for custom XML themes.
+*   **Customizable:** 86 built-in themes + support for custom XML themes.
 *   **Fast:** Zero loading times, efficient decoding, and flicker-free rendering.
 
 ---
@@ -35,11 +36,11 @@
 
 ### 1. Install dependencies
 
-You only need a C++ compiler and `libsndfile` (plus ALSA on Linux).
+You need a C++ compiler, `libsndfile`, `libjpeg` and `libpng` (plus ALSA on Linux).
 
-*   **Ubuntu / Debian:** `sudo apt install g++ libsndfile1-dev libasound2-dev`
-*   **Arch Linux:** `sudo pacman -S gcc libsndfile alsa-lib`
-*   **macOS:** `brew install libsndfile` (requires Homebrew)
+*   **Ubuntu / Debian:** `sudo apt install g++ libsndfile1-dev libasound2-dev libjpeg-dev libpng-dev`
+*   **Arch Linux:** `sudo pacman -S gcc libsndfile alsa-lib libjpeg-turbo libpng`
+*   **macOS:** `brew install libsndfile jpeg libpng` (requires Homebrew)
 
 ### 2. Build
 
@@ -82,6 +83,21 @@ inputs.my-pkgs.packages.${system}.cmuspp
 
 }
 ```
+
+---
+
+## 🖼️ Album Art
+
+CMUS++ automatically extracts and displays album art:
+
+*   **MP3:** APIC frame (ID3v2.2/2.3/2.4)
+*   **FLAC:** METADATA_BLOCK_PICTURE
+*   **OGG / OPUS:** METADATA_BLOCK_PICTURE in Vorbis comments
+*   **Fallback:** `cover.jpg`, `cover.png`, `folder.jpg`, etc. in the same directory
+
+**Compatible terminals:**
+*   **Kitty / WezTerm / ghostty / iTerm2:** Native image display (Kitty protocol)
+*   **Other terminals (Alacritty, GNOME, etc.):** ANSI half-block rendering (▄) with true-color
 
 ---
 

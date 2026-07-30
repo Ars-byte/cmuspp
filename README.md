@@ -8,7 +8,7 @@
 ██║     ██║╚██╔╝██║██║   ██║╚════██║     ██╔██╗
 ╚██████╗██║ ╚═╝ ██║╚██████╔╝███████║ ██╗██╔╝ ██╗
  ╚═════╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝ ╚═╝╚═╝  ╚═╝
-                   ++ C++ Terminal Music Player
+                    ++ C++ Terminal Music Player
 ```
 
 > 🇦🇷 Español | [🇬🇧 English](README-EN.md)
@@ -17,8 +17,9 @@
 
 **Características:**
 *   **Formatos:** MP3, FLAC, WAV, OGG, OPUS, AIFF.
+*   **Carátulas:** Soporte para carátulas incrustadas en MP3, FLAC, OGG/OPUS + archivos cover.jpg/png.
 *   **Multiplataforma:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
-*   **Personalizable:** 9 temas integrados + soporte para temas XML personalizados.
+*   **Personalizable:** 86 temas integrados + soporte para temas XML personalizados.
 *   **Rápido:** Cero tiempos de carga, decodificación eficiente y renderizado sin parpadeos.
 
 ---
@@ -39,11 +40,11 @@
 
 ### 1. Instalar dependencias
 
-Solo necesitas un compilador C++ y `libsndfile` (y ALSA en Linux).
+Necesitas un compilador C++ y las librerías `libsndfile`, `libjpeg` y `libpng` (y ALSA en Linux).
 
-*   **Ubuntu / Debian:** `sudo apt install g++ libsndfile1-dev libasound2-dev`
-*   **Arch Linux:** `sudo pacman -S gcc libsndfile alsa-lib`
-*   **macOS:** `brew install libsndfile` (requiere Homebrew)
+*   **Ubuntu / Debian:** `sudo apt install g++ libsndfile1-dev libasound2-dev libjpeg-dev libpng-dev`
+*   **Arch Linux:** `sudo pacman -S gcc libsndfile alsa-lib libjpeg-turbo libpng`
+*   **macOS:** `brew install libsndfile jpeg libpng` (requiere Homebrew)
   
 ### 2. Compilar
 
@@ -84,6 +85,21 @@ inputs = {
   ];
 }
 ```
+
+---
+
+## 🖼️ Carátulas
+
+CMUS++ extrae y muestra carátulas de álbumes automáticamente:
+
+*   **MP3:** Frame APIC (ID3v2.2/2.3/2.4)
+*   **FLAC:** METADATA_BLOCK_PICTURE
+*   **OGG / OPUS:** METADATA_BLOCK_PICTURE en comentarios Vorbis
+*   **Fallback:** `cover.jpg`, `cover.png`, `folder.jpg`, etc. en el mismo directorio
+
+**Terminales compatibles:**
+*   **Kitty / WezTerm / ghostty / iTerm2:** Imagen nativa (protocolo Kitty)
+*   **Otras terminales (Alacritty, GNOME, etc.):** Renderizado ANSI half-block (▄) con color true-color
 
 ---
 
