@@ -107,6 +107,10 @@ int main() {
             std::string s2 = browse(rt);
             if (!s2.empty()) player.load_dir(s2);
         }
+        else if (key == "a" || key == "A") {
+            draw_about();
+            read_key(rt, -1); // cualquier tecla cierra el about
+        }
         else if (key == "q" || key == "Q") break;
         else redraw = resized;
 

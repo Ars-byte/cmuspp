@@ -119,6 +119,7 @@ CMUS++ está diseñado para usarse completamente sin ratón.
 | `r` | Activar/Desactivar Repeat (Bucle) |
 | `t` | Cambiar tema de color |
 | `o` | Abrir explorador de archivos |
+| `a` | Ver información (About) |
 | `q` | Salir |
 
 ---

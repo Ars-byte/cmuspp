@@ -117,6 +117,7 @@ CMUS++ is designed to be used entirely without a mouse.
 | `r` | Toggle Repeat |
 | `t` | Cycle color theme |
 | `o` | Open file browser |
+| `a` | Show info (About) |
 | `q` | Quit |
 
 ---

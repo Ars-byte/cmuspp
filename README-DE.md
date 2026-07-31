@@ -115,6 +115,7 @@ CMUS++ ist für die vollständige Bedienung ohne Maus ausgelegt.
 | `r` | Wiederholung umschalten |
 | `t` | Farbschema wechseln |
 | `o` | Dateibrowser öffnen |
+| `a` | Info anzeigen (Über) |
 | `q` | Beenden |
 
 ---

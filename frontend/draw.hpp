@@ -240,7 +240,7 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     o += A::W2;
 
     static const char* hints =
-        " · ↑/↓ nav · Enter play · Space pause · ←/→ seek · o browse · t theme · q quit";
+        " · ↑/↓ nav · Enter play · Space pause · ←/→ seek · o browse · a about · t theme · q quit";
     int left_vis = 2 + 12 + (int)strlen(tc) + 7 + 7;
     int hfill = std::max(0, cols - left_vis - cpw(hints));
     o += std::string(hfill, ' ');
@@ -346,6 +346,70 @@ inline void draw_browser(const std::string& path, const BD& d, int cur, int scr)
     o += A::RST;
 
     o += "\033[?2026l";
+    emit(o);
+}
+
+// ── Draw: about overlay ────────────────────────────────────────────────────────
+inline void draw_about() {
+    TSz sz = tsz(); int cols = sz.cols, rows = sz.rows;
+
+    const char* TITLE = "CMUS++";
+    static const std::vector<std::string> body = {
+        "C++ Terminal Music Player",
+        "",
+        "Formats   MP3 FLAC WAV OGG OPUS AIFF",
+        "Themes    86 built-in + custom XML",
+        "Cover     embedded + cover.jpg/png",
+        "Platforms Linux (ALSA) macOS Windows",
+        "",
+        "Copyright (c) 2026 Ars-btw",
+        "v1.0.0  ·  MIT License",
+    };
+
+    int inner_w = 0;
+    for (auto& l : body) inner_w = std::max(inner_w, cpw(l));
+    int title_w = cpw(TITLE) + 2;
+
+    int box_w = std::min(std::max(inner_w, title_w) + 4, cols - 4);
+    int box_h = (int)body.size() + 6; // borders + title + 2 seps + footer
+    int top   = std::max(0, (rows - box_h) / 2);
+    int left  = std::max(0, (cols - box_w) / 2);
+
+    auto edge = [&](const char* lc, const char* rc, const std::string& mid) {
+        std::string s;
+        s += rep(" ", left);
+        s += A::GRN; s += A::BOLD;
+        s += lc; s += mid; s += rc;
+        s += A::RST; s += "\n";
+        return s;
+    };
+
+    std::string o;
+    o.reserve((size_t)cols * box_h * 4);
+    o += A::CLS; o += A::HIDE;
+    o += rep("\n", top);
+
+    o += edge("╭", "╮", rep("─", box_w - 2));
+    o += rep(" ", left); o += A::GRN; o += A::BOLD; o += "│";
+    o += A::W1; o += A::BOLD; o += center_in(TITLE, box_w - 2);
+    o += A::GRN; o += A::BOLD; o += "│"; o += A::RST; o += "\n";
+    o += edge("├", "┤", rep("─", box_w - 2));
+
+    for (auto& l : body) {
+        std::string mid = l.empty() ? std::string(box_w - 2, ' ')
+                                    : center_in(l, box_w - 2);
+        o += rep(" ", left); o += A::GRN; o += A::BOLD; o += "│";
+        o += A::W2; o += mid;
+        o += A::GRN; o += A::BOLD; o += "│"; o += A::RST; o += "\n";
+    }
+
+    o += edge("├", "┤", rep("─", box_w - 2));
+    o += rep(" ", left); o += A::GRN; o += A::BOLD; o += "│";
+    o += A::AMB; o += center_in("Press any key to close", box_w - 2);
+    o += A::GRN; o += A::BOLD; o += "│"; o += A::RST; o += "\n";
+    o += edge("╰", "╯", rep("─", box_w - 2));
+
+    if (top + box_h < rows) o += rep("\n", rows - (top + box_h));
     emit(o);
 }
 
