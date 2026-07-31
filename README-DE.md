@@ -21,6 +21,7 @@
 *   **Plattformübergreifend:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Anpassbar:** 86 integrierte Farbschemata + Unterstützung für benutzerdefinierte XML-Designs.
 *   **Schnell:** Keine Ladezeiten, effiziente Dekodierung und flackerfreie Darstellung.
+*   **Über-Fenster:** Drücke `a`, um Projektinfos, Lizenz und Credits anzuzeigen.
 
 ---
 
@@ -44,6 +45,20 @@ CMUS++ extrahiert und zeigt Albumcover automatisch an:
 **Kompatible Terminals:**
 *   **Kitty / WezTerm / ghostty / iTerm2:** Native Bildanzeige (Kitty-Protokoll)
 *   **Andere Terminals (Alacritty, GNOME, etc.):** ANSI-Halbblock-Darstellung (▄) mit True-Color
+
+---
+
+## Download (Release)
+
+Einfach ausprobieren? Lade das vorkompilierte Binary vom [**Release v1.0.0**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.0.0) (Linux x86_64):
+
+```bash
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.0.0/cmuspp-linux-x86_64
+chmod +x cmuspp-linux-x86_64
+./cmuspp-linux-x86_64
+```
+
+> Benötigt den `themes/`-Ordner (aus dem Repository) neben der ausführbaren Datei.
 
 ---
 

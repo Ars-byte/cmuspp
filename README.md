@@ -21,6 +21,7 @@
 *   **Multiplataforma:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Personalizable:** 86 temas integrados + soporte para temas XML personalizados.
 *   **Rápido:** Cero tiempos de carga, decodificación eficiente y renderizado sin parpadeos.
+*   **Info integrada:** Presioná `a` para abrir la ventana de información (About) del programa.
 
 ---
 
@@ -33,6 +34,20 @@
 |<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1af7496e-e625-49ea-a0df-276b549e8e7d" />
 
 
+
+---
+
+## Descargar (Release)
+
+¿Solo querés probarlo? Descargá el binario precompilado desde el [**release v1.0.0**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.0.0) (Linux x86_64):
+
+```bash
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.0.0/cmuspp-linux-x86_64
+chmod +x cmuspp-linux-x86_64
+./cmuspp-linux-x86_64
+```
+
+> Necesita la carpeta `themes/` (la del repositorio) junto al ejecutable.
 
 ---
 

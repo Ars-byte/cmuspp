@@ -21,6 +21,7 @@
 *   **Cross-platform:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Customizable:** 86 built-in themes + support for custom XML themes.
 *   **Fast:** Zero loading times, efficient decoding, and flicker-free rendering.
+*   **About window:** Press `a` to view project info, license and credits.
 
 ---
 
@@ -29,6 +30,20 @@
 | Player (with .xml theme) |
 |:---:|
 |<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2b6cf564-ecc1-4422-90fc-3db0f896fb4d" />|
+
+---
+
+## Download (Release)
+
+Just want to try it? Grab the prebuilt binary from the [**v1.0.0 release**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.0.0) (Linux x86_64):
+
+```bash
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.0.0/cmuspp-linux-x86_64
+chmod +x cmuspp-linux-x86_64
+./cmuspp-linux-x86_64
+```
+
+> Requires the `themes/` folder (from the repo) next to the executable.
 
 ---
 
