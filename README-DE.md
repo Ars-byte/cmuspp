@@ -11,13 +11,14 @@
                     ++ C++ Terminal Music Player
 ```
 
-> [🇦🇷 Español](README.md) | [🇬🇧 English](README-EN.md) | 🇩🇪 Deutsch | [🇧🇷 Português](README-PT-BR.md) | [🇫🇷 Français](README-FR.md) | [🇮🇹 Italiano](README-IT.md) | [🇷🇺 Русский](README-RU.md)
+> [ Español](README.md) | [ English](README-EN.md) | Deutsch | [ Português](README-PT-BR.md) | [ Français](README-FR.md) | [ Italiano](README-IT.md) | [ Русский](README-RU.md)
 
 **CMUS++** ist ein Terminal-Musikplayer, geschrieben in C++17. Extrem leicht, blitzschnell, komplett über die Tastatur steuerbar und ohne grafische Abhängigkeiten.
 
 **Funktionen:**
 *   **Formate:** MP3, FLAC, WAV, OGG, OPUS, AIFF.
 *   **Albumcover:** Extrahiert eingebettete Cover aus MP3, FLAC, OGG/OPUS + Fallback auf cover.jpg/png.
+*   **Liedtexte:** Synchronisierte `.lrc`-Dateien + in den Tags eingebettete Texte (USLT/LYRICS), 100 % offline.
 *   **Plattformübergreifend:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Anpassbar:** 86 integrierte Farbschemata + Unterstützung für benutzerdefinierte XML-Designs.
 *   **Schnell:** Keine Ladezeiten, effiziente Dekodierung und flackerfreie Darstellung.
@@ -33,7 +34,7 @@
 
 ---
 
-## 🖼️ Albumcover
+## Albumcover
 
 CMUS++ extrahiert und zeigt Albumcover automatisch an:
 
@@ -114,6 +115,26 @@ inputs = {
 
 ---
 
+## Liedtexte
+
+Drücke `l` im Player, um den Liedtext des aktuellen Titels im Vollbild anzuzeigen (die Liste wird ausgeblendet). 100 % offline — keine Netzwerkverbindung, keine externen Dienste. Liedtexte werden so aufgelöst:
+
+1. **Synchronisierte `.lrc`-Datei** neben dem Titel (z. B. `titel.mp3` → `titel.lrc`). Die aktuelle Zeile wird hervorgehoben und folgt der Wiedergabe.
+2. **In den Tags eingebettete Liedtexte** (USLT-Frame in MP3, LYRICS-Feld in FLAC/OGG). Werden als statischer Text angezeigt und mit `↑`/`↓` gescrollt.
+
+`.lrc`-Format:
+
+```
+[ti:Titel]
+[ar:Interpret]
+[00:12.50]Erste Zeile
+[00:24.00]Zweite Zeile
+```
+
+Unterstützt `[mm:ss]`- / `[mm:ss.xx]`-Zeitstempel, mehrere Zeitstempel pro Zeile (`[00:12][00:24]Text`) und das `[offset:±ms]`-Tag.
+
+---
+
 ## Bedienung
 
 CMUS++ ist für die vollständige Bedienung ohne Maus ausgelegt.
@@ -123,11 +144,12 @@ CMUS++ ist für die vollständige Bedienung ohne Maus ausgelegt.
 | `↑` / `↓` (oder `k`/`j`) | In der Liste navigieren |
 | `Enter` | Titel abspielen / Ordner öffnen |
 | `Leertaste` | Pause / Fortsetzen |
-| `←` / `→` (oder `h`/`l`) | 5s zurück/vor (Im Browser: Eine Ebene hoch) |
+| `←` / `→` (oder `h`) | 5s zurück/vor (Im Browser: Eine Ebene hoch) |
 | `n` / `p` | Nächster / Vorheriger Titel |
 | `+` / `-` | Lautstärke erhöhen/verringern |
 | `s` | Zufallswiedergabe umschalten |
 | `r` | Wiederholung umschalten |
+| `l` | Liedtexte (.lrc oder eingebettet) im Vollbild anzeigen/ausblenden |
 | `/` | Titel im aktuellen Ordner suchen (tippen zum Filtern, `Enter` abspielen) |
 | `t` | Farbschema wechseln |
 | `o` | Dateibrowser öffnen |
