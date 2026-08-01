@@ -11,13 +11,14 @@
                     ++ C++ Terminal Music Player
 ```
 
-> [🇦🇷 Español](README.md) | [🇬🇧 English](README-EN.md) | [🇩🇪 Deutsch](README-DE.md) | 🇧🇷 Português | [🇫🇷 Français](README-FR.md) | [🇮🇹 Italiano](README-IT.md) | [🇷🇺 Русский](README-RU.md)
+> [ Español](README.md) | [ English](README-EN.md) | [ Deutsch](README-DE.md) | Português | [ Français](README-FR.md) | [ Italiano](README-IT.md) | [ Русский](README-RU.md)
 
 **CMUS++** é um player de música para terminal escrito em C++17. Ultraleve, rapidíssimo, controlado pelo teclado e sem dependências gráficas.
 
 **Recursos:**
 *   **Formatos:** MP3, FLAC, WAV, OGG, OPUS, AIFF.
 *   **Capa do álbum:** Extrai capas incorporadas de MP3, FLAC, OGG/OPUS + fallback para cover.jpg/png.
+*   **Letras:** `.lrc` sincronizadas + letras embutidas nos tags (USLT/LYRICS), 100% offline.
 *   **Multiplataforma:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Personalizável:** 86 temas integrados + suporte para temas XML personalizados.
 *   **Rápido:** Sem tempo de carregamento, decodificação eficiente e renderização sem cintilação.
@@ -99,7 +100,7 @@ inputs = {
 
 ---
 
-## 🖼️ Capa do Álbum
+## Capa do Álbum
 
 O CMUS++ extrai e exibe capas de álbuns automaticamente:
 
@@ -114,6 +115,26 @@ O CMUS++ extrai e exibe capas de álbuns automaticamente:
 
 ---
 
+## Letras
+
+Pressione `l` dentro do reprodutor para ver a letra da música em tela cheia (oculta a lista). 100% offline — sem rede, sem serviços externos. As letras são resolvidas assim:
+
+1. **`.lrc` sincronizado** ao lado da música (ex.: `música.mp3` → `música.lrc`). A linha atual é destacada e avança em sincronia com a reprodução.
+2. **Letras embutidas nos tags** do próprio arquivo (frame `USLT` em MP3, campo `LYRICS` em FLAC/OGG). Exibidas como texto estático, navegável com `↑`/`↓`.
+
+Formato `.lrc`:
+
+```
+[ti:Título]
+[ar:Artista]
+[00:12.50]Primeira linha
+[00:24.00]Segunda linha
+```
+
+Suporta timestamps `[mm:ss]` / `[mm:ss.xx]`, vários timestamps por linha (`[00:12][00:24]texto`) e o tag `[offset:±ms]`.
+
+---
+
 ## Controles
 
 O CMUS++ foi projetado para ser usado totalmente sem mouse.
@@ -123,11 +144,12 @@ O CMUS++ foi projetado para ser usado totalmente sem mouse.
 | `↑` / `↓` (ou `k`/`j`) | Navegar pela lista |
 | `Enter` | Reproduzir / Entrar na pasta |
 | `Espaço` | Pausar / Retomar |
-| `←` / `→` (ou `h`/`l`) | Voltar 5s / Avançar 5s (No navegador: Subir um nível) |
+| `←` / `→` (ou `h`) | Voltar 5s / Avançar 5s (No navegador: Subir um nível) |
 | `n` / `p` | Próxima / Anterior faixa |
 | `+` / `-` | Aumentar / Diminuir volume |
 | `s` | Ativar/Desativar Shuffle (Aleatório) |
 | `r` | Ativar/Desativar Repeat (Repetição) |
+| `l` | Mostrar/ocultar letra (.lrc ou embutida nos tags) em tela cheia |
 | `/` | Buscar uma faixa na pasta atual (digite para filtrar, `Enter` reproduz) |
 | `t` | Mudar o tema de cores |
 | `o` | Abrir o explorador de arquivos |
