@@ -11,13 +11,14 @@
                     ++ C++ Terminal Music Player
 ```
 
-> [🇦🇷 Español](README.md) | [🇬🇧 English](README-EN.md) | [🇩🇪 Deutsch](README-DE.md) | [🇧🇷 Português](README-PT-BR.md) | [🇫🇷 Français](README-FR.md) | 🇮🇹 Italiano | [🇷🇺 Русский](README-RU.md)
+> [ Español](README.md) | [ English](README-EN.md) | [ Deutsch](README-DE.md) | [ Português](README-PT-BR.md) | [ Français](README-FR.md) | Italiano | [ Русский](README-RU.md)
 
 **CMUS++** è un riproduttore musicale per terminale scritto in C++17. Ultra-leggero, velocissimo, controllato da tastiera e senza dipendenze grafiche.
 
 **Caratteristiche:**
 *   **Formati:** MP3, FLAC, WAV, OGG, OPUS, AIFF.
 *   **Copertine:** Estrazione delle copertine incorporate da MP3, FLAC, OGG/OPUS + fallback su cover.jpg/png.
+*   **Testi:** `.lrc` sincronizzati + testi incorporati nei tag (USLT/LYRICS), 100% offline.
 *   **Multipiattaforma:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Personalizzabile:** 86 temi integrati + supporto per temi XML personalizzati.
 *   **Veloce:** Nessun tempo di caricamento, decodifica efficiente e rendering senza sfarfallio.
@@ -99,7 +100,7 @@ inputs = {
 
 ---
 
-## 🖼️ Copertine degli Album
+## Copertine degli Album
 
 CMUS++ estrae e mostra automaticamente le copertine degli album:
 
@@ -114,6 +115,26 @@ CMUS++ estrae e mostra automaticamente le copertine degli album:
 
 ---
 
+## Testi
+
+Premi `l` nel riproduttore per vedere il testo della canzone a schermo intero (nasconde la lista). 100% offline — nessuna rete, nessun servizio esterno. I testi vengono risolti così:
+
+1. **`.lrc` sincronizzato** accanto alla canzone (es. `canzone.mp3` → `canzone.lrc`). La riga corrente è evidenziata e avanza in sincronia con la riproduzione.
+2. **Testi incorporati nei tag** del file stesso (frame `USLT` in MP3, campo `LYRICS` in FLAC/OGG). Mostrati come testo statico, scorribili con `↑`/`↓`.
+
+Formato `.lrc`:
+
+```
+[ti:Titolo]
+[ar:Artista]
+[00:12.50]Prima riga
+[00:24.00]Seconda riga
+```
+
+Supporta timestamp `[mm:ss]` / `[mm:ss.xx]`, più timestamp per riga (`[00:12][00:24]testo`) e il tag `[offset:±ms]`.
+
+---
+
 ## Comandi
 
 CMUS++ è progettato per essere usato interamente senza mouse.
@@ -123,11 +144,12 @@ CMUS++ è progettato per essere usato interamente senza mouse.
 | `↑` / `↓` (o `k`/`j`) | Navigare nella lista |
 | `Enter` | Riprodurre / Entrare nella cartella |
 | `Spazio` | Pausa / Riprendi |
-| `←` / `→` (o `h`/`l`) | Indietro 5s / Avanti 5s (Nel browser: Salire di un livello) |
+| `←` / `→` (o `h`) | Indietro 5s / Avanti 5s (Nel browser: Salire di un livello) |
 | `n` / `p` | Traccia successiva / Precedente |
 | `+` / `-` | Alza / Abbassa volume |
 | `s` | Attiva/Disattiva Shuffle (Casuale) |
 | `r` | Attiva/Disattiva Repeat (Ripetizione) |
+| `l` | Mostra/nascondi testi (.lrc o incorporati) a schermo intero |
 | `/` | Cerca una traccia nella cartella corrente (digita per filtrare, `Enter` riproduce) |
 | `t` | Cambia il tema dei colori |
 | `o` | Apri il file browser |
