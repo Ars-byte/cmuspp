@@ -3,6 +3,11 @@
   backend/metadata.hpp
   Lightweight tag + duration scanner for the playlist view.
 
+  Also extracts embedded lyrics from the tags:
+    MP3    → ID3v2 USLT / ULT frame
+    FLAC   → VORBIS_COMMENT "LYRICS" field
+    OGG    → Vorbis comment "LYRICS" field (OpusTags for .opus)
+
   Thread-safety: read_meta() only touches local state and libsndfile
   (independent handles), so it can run from a background loader thread.
   All parsers are "first-N-bytes" scans (ID3v2 header, first FLAC block,
@@ -24,6 +29,7 @@ namespace fs = std::filesystem;
 
 struct TrackMeta {
     std::string artist, album, title;
+    std::string lyrics;      // plain-text lyrics embedded in the tags
     double duration = 0.0;   // seconds (0 = unknown)
     int    bitrate  = 0;     // kbps   (0 = unknown)
 };
@@ -97,6 +103,31 @@ static inline uint32_t md_id3_size(const uint8_t* p) {
          | ((uint32_t)(p[2] & 0x7F) <<  7) | ((uint32_t)(p[3] & 0x7F));
 }
 
+// USLT/ULT (unsynchronized lyrics) frame data:
+//   enc(1) lang(3) content-descriptor(NUL-terminated) lyrics-text
+// The descriptor terminator is 1 byte for enc 0/3, 2 bytes (0x0000) for UTF-16.
+static inline std::string md_id3_uslt(const uint8_t* p, size_t len) {
+    if (len < 5) return {};
+    uint8_t enc = p[0];
+    size_t i = 4;
+    if (enc == 0x01 || enc == 0x02) {
+        while (i + 1 < len) {
+            if (p[i] == 0x00 && p[i + 1] == 0x00) { i += 2; break; }
+            i += 2;
+        }
+    } else {
+        while (i < len && p[i] != 0x00) ++i;
+        if (i < len) ++i;
+    }
+    std::string s;
+    if      (enc == 0x01 || enc == 0x02)
+        s = md_utf16_to_utf8(p + i, len - i, enc == 0x02);
+    else
+        s.assign((const char*)p + i, len - i);
+    size_t z = s.find('\0'); if (z != std::string::npos) s = s.substr(0, z);
+    return md_trim(s);
+}
+
 // Extract TPE1/TALB/TIT2 (v2.3/2.4) or TP1/TAL/TT2 (v2.2) into `m`.
 static inline void md_id3_tags(const std::string& path, TrackMeta& m) {
     FILE* f = fopen(path.c_str(), "rb");
@@ -146,16 +177,20 @@ static inline void md_id3_tags(const std::string& path, TrackMeta& m) {
             if      (fid == "TPE1" || fid == "TP1") m.artist = md_id3_text(p, fsz);
             else if (fid == "TALB" || fid == "TAL") m.album  = md_id3_text(p, fsz);
             else if (fid == "TIT2" || fid == "TT2") m.title  = md_id3_text(p, fsz);
+            else if (fid == "USLT" || fid == "ULT") m.lyrics = md_id3_uslt(p, fsz);
         }
         p += fsz; left -= fsz;
     }
 }
 
-// ── FLAC VORBIS_COMMENT block ────────────────────────────────────────────────
-static inline uint32_t md_flac_u32(const std::vector<uint8_t>& d, size_t off) {
-    if (off + 4 > d.size()) return 0;
-    return ((uint32_t)d[off] << 24) | ((uint32_t)d[off + 1] << 16)
-         | ((uint32_t)d[off + 2] << 8) | d[off + 3];
+// ── FLAC / OGG VORBIS_COMMENT (Vorbis comment structure) ────────────────────
+// Length fields are LITTLE-endian per the Vorbis I spec (unlike FLAC's
+// big-endian block headers). Small values look identical either way, but
+// multi-byte values (e.g. embedded lyrics) need the correct endianness.
+static inline uint32_t md_le32(const uint8_t* d, size_t off, size_t len) {
+    if (off + 4 > len) return 0;
+    return (uint32_t)d[off] | ((uint32_t)d[off + 1] << 8)
+         | ((uint32_t)d[off + 2] << 16) | ((uint32_t)d[off + 3] << 24);
 }
 
 static inline bool md_icase_eq(const std::string& a, const char* b) {
@@ -174,6 +209,24 @@ static inline void md_apply_keyval(TrackMeta& m, const std::string& kv) {
     if      (md_icase_eq(k, "ARTIST")) m.artist = v;
     else if (md_icase_eq(k, "ALBUM"))  m.album  = v;
     else if (md_icase_eq(k, "TITLE"))  m.title  = v;
+    else if (md_icase_eq(k, "LYRICS")) m.lyrics = v;
+}
+
+// Parse the Vorbis comment structure starting at `off` (little-endian).
+static inline void md_vorbis_comments(const uint8_t* d, size_t len,
+                                      size_t off, TrackMeta& m) {
+    if (off + 4 > len) return;
+    uint32_t vlen = md_le32(d, off, len); off += 4;
+    if (off + vlen > len) return;
+    off += vlen;
+    if (off + 4 > len) return;
+    uint32_t n = md_le32(d, off, len); off += 4;
+    for (uint32_t i = 0; i < n && off + 4 <= len; ++i) {
+        uint32_t cl = md_le32(d, off, len); off += 4;
+        if (off + cl > len) return;
+        md_apply_keyval(m, std::string((const char*)d + off, cl));
+        off += cl;
+    }
 }
 
 static inline void md_flac_comments(const std::string& path, TrackMeta& m) {
@@ -191,17 +244,7 @@ static inline void md_flac_comments(const std::string& path, TrackMeta& m) {
         if (type == 4 && sz > 4) { // VORBIS_COMMENT
             std::vector<uint8_t> d(sz);
             if (fread(d.data(), 1, sz, f) != sz) { fclose(f); return; }
-            size_t off = 0;
-            uint32_t vendor_len = md_flac_u32(d, off); off += 4;
-            off += vendor_len;
-            if (off + 4 > d.size()) { fclose(f); return; }
-            uint32_t n = md_flac_u32(d, off); off += 4;
-            for (uint32_t i = 0; i < n && off + 4 <= d.size(); ++i) {
-                uint32_t cl = md_flac_u32(d, off); off += 4;
-                if (off + cl > d.size()) break;
-                md_apply_keyval(m, std::string((const char*)d.data() + off, cl));
-                off += cl;
-            }
+            md_vorbis_comments(d.data(), d.size(), 0, m);
             fclose(f); return;
         }
         if (fseek(f, sz, SEEK_CUR) != 0) break;
@@ -214,38 +257,25 @@ static inline void md_flac_comments(const std::string& path, TrackMeta& m) {
 static inline void md_ogg_tags(const std::string& path, TrackMeta& m) {
     FILE* f = fopen(path.c_str(), "rb");
     if (!f) return;
-    std::vector<char> buf(65536);
+    std::vector<uint8_t> buf(65536);
     size_t nr = fread(buf.data(), 1, buf.size(), f);
     fclose(f);
     if (nr < 8) return;
 
-    std::string s(buf.data(), nr);
-    std::string low = s;
-    std::transform(low.begin(), low.end(), low.begin(), ::tolower);
-
-    auto find_val = [&](const char* key) -> std::string {
-        std::string kl(key);
-        std::transform(kl.begin(), kl.end(), kl.begin(), ::tolower);
-        size_t p = low.find(kl);
-        while (p != std::string::npos) {
-            size_t st = p + kl.size();
-            size_t e  = low.find('\n', st);
-            std::string v = s.substr(st, (e == std::string::npos)
-                                        ? std::string::npos : e - st);
-            v = md_trim(v);
-            if (!v.empty()) return v;
-            p = low.find(kl, p + kl.size());
-        }
-        return {};
-    };
-
-    m.artist = find_val("ARTIST=");
-    m.album  = find_val("ALBUM=");
-    m.title  = find_val("TITLE=");
+    // The comment header packet is "\x03vorbis" (Vorbis) or "OpusTags"
+    // (Opus), followed by the binary Vorbis-comment structure.
+    size_t off = std::string::npos;
+    for (size_t i = 0; i + 8 <= nr; ++i) {
+        if (memcmp(buf.data() + i, "\x03vorbis", 7) == 0) { off = i + 7; break; }
+        if (memcmp(buf.data() + i, "OpusTags", 8) == 0)    { off = i + 8; break; }
+    }
+    if (off == std::string::npos) return;
+    md_vorbis_comments(buf.data(), nr, off, m);
 }
 
-// ── Master entry point ───────────────────────────────────────────────────────
-inline TrackMeta read_meta(const std::string& path) {
+// ── Master entry points ──────────────────────────────────────────────────────
+// Tags only (no libsndfile) — cheap, used by the lyrics loader.
+inline TrackMeta read_meta_tags(const std::string& path) {
     TrackMeta m;
 
     std::string lc = path;
@@ -259,6 +289,11 @@ inline TrackMeta read_meta(const std::string& path) {
              (lc.compare(lc.size() - 4, 4, ".ogg") == 0 ||
               lc.compare(lc.size() - 5, 5, ".opus") == 0))
         md_ogg_tags(path, m);
+    return m;
+}
+
+inline TrackMeta read_meta(const std::string& path) {
+    TrackMeta m = read_meta_tags(path);
 
     // Exact duration + derived bitrate via libsndfile (uniform, VBR-safe).
     SF_INFO info{};

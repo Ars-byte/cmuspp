@@ -1,10 +1,13 @@
 #pragma once
 #include "audio_out.hpp"
 #include "decoder.hpp"
+#include "lyrics.hpp"
 #include "metadata.hpp"
 
 #include <algorithm>
 #include <filesystem>
+#include <memory>
+#include <mutex>
 #include <random>
 #include <string>
 #include <thread>
@@ -75,6 +78,49 @@ struct Player {
         return meta_ready.load(std::memory_order_acquire) >= (int)metas.size();
     }
 
+    // ── Lyrics (.lrc) ───────────────────────────────────────────────────────
+    // Resolved in the background when the song changes: local <song>.lrc
+    // first, then lyrics embedded in the file tags. 100% offline.
+    // Stored as a shared_ptr so draw_lyrics() gets an immutable snapshot
+    // without deep-copying the whole vector every frame (~10 fps).
+    mutable std::mutex lrc_mtx;
+    std::shared_ptr<const Lyrics> lrc;
+    std::string        lrc_for;
+    std::atomic<bool>  lrc_loading{false};
+
+    std::shared_ptr<const Lyrics> lyrics() const {
+        std::lock_guard<std::mutex> lk(lrc_mtx);
+        static const Lyrics empty;
+        return lrc ? lrc
+                   : std::shared_ptr<const Lyrics>(&empty, [](const Lyrics*) {});
+    }
+    bool lyrics_loading() const {
+        return lrc_loading.load(std::memory_order_relaxed);
+    }
+
+    void load_lyrics_async() {
+        if (playing_now.empty()) return;
+        std::string fp = (fs::path(dir) / playing_now).string();
+        {
+            std::lock_guard<std::mutex> lk(lrc_mtx);
+            if (lrc) return;   // already resolved
+        }
+        bool expected = false;
+        if (!lrc_loading.compare_exchange_strong(expected, true)) return;
+
+        std::thread([this, fp, song = playing_now]() {
+            std::shared_ptr<Lyrics> got;
+            Lyrics g = load_lrc(fp);                  // 1) .lrc local
+            if (!g.valid()) g = embedded_lyrics(fp);  // 2) tags incrustados
+            if (g.valid()) got = std::make_shared<Lyrics>(std::move(g));
+            {
+                std::lock_guard<std::mutex> lk(lrc_mtx);
+                if (lrc_for == song && !lrc) lrc = std::move(got);
+            }
+            lrc_loading.store(false, std::memory_order_relaxed);
+        }).detach();
+    }
+
     double elapsed() const {
         if (playing_now.empty()) return 0.0;
         return paused ? soff.load(std::memory_order_relaxed)
@@ -92,7 +138,16 @@ struct Player {
     void play_current(double from = 0.0) {
         if (songs.empty()) return;
         playing_now = songs[row];
-        
+
+        if (lrc_for != playing_now) {
+            {
+                std::lock_guard<std::mutex> lk(lrc_mtx);
+                lrc_for = playing_now;
+                lrc     = nullptr;
+            }
+            load_lyrics_async();
+        }
+
         std::string fp = (fs::path(dir) / playing_now).string();
 
         paused = false;
@@ -172,6 +227,11 @@ struct Player {
         playing_now.clear();
         paused = false;
         ao.paused.store(false, std::memory_order_release);
+        {
+            std::lock_guard<std::mutex> lk(lrc_mtx);
+            lrc_for.clear();
+            lrc = nullptr;
+        }
     }
 
     void load_dir(const std::string& path) {

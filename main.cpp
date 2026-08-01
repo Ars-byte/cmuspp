@@ -14,7 +14,7 @@ static ThemeManager g_themes;
 void handle_sigwinch(int) {}
 
 int main() {
-    // Cargar temas SOLO desde la carpeta "themes" local (portable)
+    // Load themes ONLY from the local "themes" folder (portable)
     g_themes.load_xml_dir("themes");
     
     init_colors(g_themes);   
@@ -40,7 +40,21 @@ int main() {
 
     Player player;
     player.load_dir(sel);
-    draw_player(player, g_themes);
+
+    // ── Full-screen lyrics mode ─────────────────────────────────────────────
+    bool lyrics_mode = false;
+    int  lyr_scroll  = 0;      // scroll for unsynchronized (embedded) lyrics
+    auto draw = [&]() {
+        if (lyrics_mode) draw_lyrics(player, g_themes, lyr_scroll);
+        else             draw_player(player, g_themes);
+    };
+    draw();
+
+    auto scroll_lyrics = [&](int d) {
+        auto L = player.lyrics();
+        if (L->synced || L->lines.empty()) return;   // synced view auto-centers
+        lyr_scroll = std::clamp(lyr_scroll + d, 0, (int)L->lines.size() - 1);
+    };
 
     double last_draw = mono_now();
     static constexpr double DRAW_INTERVAL = 0.125; 
@@ -68,7 +82,7 @@ int main() {
             sel = browse(rt);
             if (!sel.empty()) {
                 player.load_dir(sel);
-                draw_player(player, g_themes);
+                draw();
                 last_draw = mono_now();
             } else {
                 break;
@@ -78,7 +92,7 @@ int main() {
 
         if (!player.playing_now.empty() && !player.paused && player.is_ended()) {
             player.next_song();
-            draw_player(player, g_themes);
+            draw();
             last_draw = mono_now();
             continue;
         }
@@ -106,7 +120,7 @@ int main() {
                 rebuild_matches();
             }
 
-            if (leave) { searching = false; draw_player(player, g_themes); }
+            if (leave) { searching = false; draw(); }
             else       { draw_search(player, query, matches, mrow); }
             last_draw = mono_now();
             continue;
@@ -118,21 +132,28 @@ int main() {
         bool resized = (cur_tsz.cols != last_tsz.cols || cur_tsz.rows != last_tsz.rows);
         if (resized) last_tsz = cur_tsz;
 
+        // Reset the unsynchronized-lyrics scroll whenever the song changes.
+        static std::string scroll_song;
+        if (player.playing_now != scroll_song) {
+            scroll_song = player.playing_now;
+            lyr_scroll  = 0;
+        }
+
         if (key.empty()) {
             if (resized) {
-                draw_player(player, g_themes);
+                draw();
                 last_draw = mono_now();
             } else if (!player.playing_now.empty() && !player.paused) {
                 double now = mono_now();
                 if (now - last_draw >= DRAW_INTERVAL) {
-                    draw_player(player, g_themes);
+                    draw();
                     last_draw = now;
                 }
             } else if (!player.meta_done()) {
                 // Keep refreshing while the metadata loader populates columns
                 double now = mono_now();
                 if (now - last_draw >= 0.25) {
-                    draw_player(player, g_themes);
+                    draw();
                     last_draw = now;
                 }
             }
@@ -142,18 +163,25 @@ int main() {
         bool redraw = true;
         int  n      = (int)player.songs.size();
 
-        if      (key == "\x1b[A" || key == "k") player.row = (player.row - 1 + n) % n;
-        else if (key == "\x1b[B" || key == "j") player.row = (player.row + 1) % n;
+        if      (key == "\x1b[A" || key == "k") {
+            if (lyrics_mode) scroll_lyrics(-1);
+            else             player.row = (player.row - 1 + n) % n;
+        }
+        else if (key == "\x1b[B" || key == "j") {
+            if (lyrics_mode) scroll_lyrics(+1);
+            else             player.row = (player.row + 1) % n;
+        }
         else if (key == "\r")                    player.play_current();
         else if (key == "n" || key == "N")       player.next_song();
         else if (key == "p" || key == "P")       player.prev_song();
         else if (key == " ")                     player.toggle_pause();
         else if (key == "\x1b[D" || key == "h")  player.seek(-5.0);
-        else if (key == "\x1b[C" || key == "l")  player.seek(+5.0);
+        else if (key == "\x1b[C")                player.seek(+5.0);
         else if (key == "+" || key == "=")       player.change_vol(+0.05f);
         else if (key == "-" || key == "_")       player.change_vol(-0.05f);
         else if (key == "s" || key == "S")       player.shuffle  = !player.shuffle;
         else if (key == "r" || key == "R")       player.loop_on  = !player.loop_on;
+        else if (key == "l" || key == "L")       { lyrics_mode = !lyrics_mode; lyr_scroll = 0; }
         else if (key == "t" || key == "T")       apply_theme(g_themes, g_themes.current + 1);
         else if (key == "o" || key == "O") {
             emit(std::string(A::CLS) + A::SHOW); flush_out();
@@ -177,7 +205,7 @@ int main() {
         else redraw = resized;
 
         if (redraw) {
-            draw_player(player, g_themes);
+            draw();
             last_draw = mono_now();
         }
     }

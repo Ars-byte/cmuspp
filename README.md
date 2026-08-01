@@ -11,13 +11,14 @@
                     ++ C++ Terminal Music Player
 ```
 
-> 🇦🇷 Español | [🇬🇧 English](README-EN.md) | [🇩🇪 Deutsch](README-DE.md) | [🇧🇷 Português](README-PT-BR.md) | [🇫🇷 Français](README-FR.md) | [🇮🇹 Italiano](README-IT.md) | [🇷🇺 Русский](README-RU.md)
+> Español | [ English](README-EN.md) | [ Deutsch](README-DE.md) | [ Português](README-PT-BR.md) | [ Français](README-FR.md) | [ Italiano](README-IT.md) | [ Русский](README-RU.md)
 
 **CMUS++** es un reproductor de música para terminal escrito en C++17. Ultraligero, rapidísimo, controlado por teclado y sin dependencias gráficas.
 
 **Características:**
 *   **Formatos:** MP3, FLAC, WAV, OGG, OPUS, AIFF.
 *   **Carátulas:** Soporte para carátulas incrustadas en MP3, FLAC, OGG/OPUS + archivos cover.jpg/png.
+*   **Letras:** `.lrc` sincronizadas + letras incrustadas en los tags (USLT/LYRICS), 100% offline.
 *   **Multiplataforma:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Personalizable:** 86 temas integrados + soporte para temas XML personalizados.
 *   **Rápido:** Cero tiempos de carga, decodificación eficiente y renderizado sin parpadeos.
@@ -51,7 +52,7 @@ chmod +x cmuspp-linux-x86_64
 
 ---
 
-##  Instalación y Compilación
+## Instalación y Compilación
 
 ### 1. Instalar dependencias
 
@@ -103,7 +104,7 @@ inputs = {
 
 ---
 
-## 🖼️ Carátulas
+## Carátulas
 
 CMUS++ extrae y muestra carátulas de álbumes automáticamente:
 
@@ -118,6 +119,26 @@ CMUS++ extrae y muestra carátulas de álbumes automáticamente:
 
 ---
 
+## Letras
+
+Presioná `l` dentro del reproductor para ver la letra de la canción a pantalla completa (oculta la lista). 100% offline, sin red ni servicios externos. Las letras se resuelven así:
+
+1. **`.lrc` sincronizado** al lado de la canción (ej: `cancion.mp3` → `cancion.lrc`). La línea actual se resalta y avanza sincronizada con la reproducción.
+2. **Letras incrustadas en los tags** del propio archivo (frame `USLT` en MP3, campo `LYRICS` en FLAC/OGG). Se muestran como texto estático y se navegan con `↑`/`↓`.
+
+Formato `.lrc`:
+
+```
+[ti:Título]
+[ar:Artista]
+[00:12.50]Primera línea
+[00:24.00]Segunda línea
+```
+
+Soporta timestamps `[mm:ss]` / `[mm:ss.xx]`, varias marcas por línea (`[00:12][00:24]texto`) y el tag `[offset:±ms]`.
+
+---
+
 ## Controles
 
 CMUS++ está diseñado para usarse completamente sin ratón.
@@ -127,11 +148,12 @@ CMUS++ está diseñado para usarse completamente sin ratón.
 | `↑` / `↓` (o `k`/`j`) | Navegar por la lista |
 | `Enter` | Reproducir / Entrar a carpeta |
 | `Space` | Pausar / Reanudar |
-| `←` / `→` (o `h`/`l`) | Atrás 5s / Adelante 5s (En navegador: Subir nivel) |
+| `←` / `→` (o `h`) | Atrás 5s / Adelante 5s (En navegador: Subir nivel) |
 | `n` / `p` | Siguiente / Anterior canción |
 | `+` / `-` | Subir / Bajar volumen |
 | `s` | Activar/Desactivar Shuffle (Aleatorio) |
 | `r` | Activar/Desactivar Repeat (Bucle) |
+| `l` | Mostrar/ocultar letra (.lrc o incrustada en tags) a pantalla completa |
 | `/` | Buscar una canción en la carpeta actual (escribe para filtrar, `Enter` reproduce) |
 | `t` | Cambiar tema de color |
 | `o` | Abrir explorador de archivos |

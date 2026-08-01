@@ -271,7 +271,7 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     o += A::W2;
 
     static const char* hints =
-        " · ↑/↓ nav · Enter play · Space pause · ←/→ seek · / search · o browse · a about · t theme · q quit";
+        " · ↑/↓ nav · Enter play · Space pause · ←/→ seek · / search · l lyrics · o browse · a about · t theme · q quit";
     int left_vis = 2 + 12 + (int)strlen(tc) + 7 + 7;
     int hfill = std::max(0, cols - left_vis - cpw(hints));
     o += std::string(hfill, ' ');
@@ -282,7 +282,94 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     emit(o);
 }
 
-// ── Draw: search overlay ──────────────────────────────────────────────────────
+// ── Draw: full-screen lyrics (.lrc sync / embedded text) ─────────────────────
+// `scroll` only applies to unsynchronized (embedded-tag) lyrics: the synced
+// view always centers on the current line.
+inline void draw_lyrics(Player& p, const ThemeManager& mgr, int scroll) {
+    TSz sz = tsz(); int cols = sz.cols, rows = sz.rows;
+
+    auto L = p.lyrics();       // shared_ptr<const Lyrics> — cheap snapshot
+    double t   = p.elapsed();
+    int cur    = lyric_index(*L, t);
+    int total  = (int)L->lines.size();
+    bool synced = L->synced;
+
+    std::string o;
+    o.reserve((size_t)cols * rows * 4);
+    o += "\033[?2026h";
+    o += "\033[H\033[2J";
+    o += A::HIDE;
+
+    // ── Header row ────────────────────────────────────────────────────────────
+    o += A::BG_HDR; o += A::BOLD;
+    o += " "; o += A::GRN; o += A::NOTE;
+    o += " "; o += A::W1; o += "CMUS++";
+    {
+        int theme_w = 2 + (int)mgr.active().name.size();
+        o += A::W2; o += center_in("LYRICS", cols - 9 - theme_w);
+        o += A::W3; o += " "; o += mgr.active().name; o += " ";
+    }
+    o += A::RST; o += "\n";
+
+    // ── Song title row ───────────────────────────────────────────────────────
+    std::string title = p.playing_now.empty() ? "Stopped" : strip_ext(p.playing_now);
+    o += A::W2; o += center_in(trunc_str(title, cols - 4), cols);
+    o += A::RST; o += "\n";
+
+    // ── Lyrics area ──────────────────────────────────────────────────────────
+    int area = std::max(1, rows - 4);   // header + title + divider + status
+    int start = 0;
+    if (synced && total > 0) {
+        start = std::max(0, cur - area / 2);
+        if (start + area > total) start = std::max(0, total - area);
+    } else if (!synced && total > 0) {
+        start = std::clamp(scroll, 0, std::max(0, total - area));
+    }
+
+    for (int y = 0; y < area; ++y) {
+        int idx = start + y;
+        if (total == 0 && y == area / 2) {
+            o += A::W3;
+            const char* msg = p.lyrics_loading()
+                            ? "loading lyrics..." : "no lyrics (.lrc or tags)";
+            o += center_in(msg, cols);
+        } else if (idx < total) {
+            const std::string& txt = L->lines[idx].text;
+            if (synced && idx == cur) {
+                o += A::BG_PLAY; o += A::BOLD;
+                o += " "; o += A::PLAY_I; o += " ";
+                o += pad_r(txt, cols - 3);
+            } else if (synced && idx < cur) {
+                o += A::W3;
+                o += "   "; o += pad_r(txt, cols - 3);
+            } else {
+                o += A::W2;
+                o += "   "; o += pad_r(txt, cols - 3);
+            }
+        } else {
+            o += std::string(cols, ' ');
+        }
+        o += A::RST; o += "\n";
+    }
+
+    // ── Status bar ────────────────────────────────────────────────────────────
+    o += A::BG_STAT;
+    if (p.paused)                   { o += " "; o += A::AMB; o += A::PAUS_I; }
+    else if (p.playing_now.empty()) { o += " "; o += A::W3;  o += A::STOP_I; }
+    else                            { o += " "; o += A::GRN; o += A::PLAY_I; }
+    o += A::W2;
+    o += " "; o += fmt_t(p.elapsed());
+    if (p.duration() > 0) { o += A::W3; o += " / "; o += A::W2; o += fmt_t(p.duration()); }
+
+    static const char* hints = " · l lista · Space pause · ←/→ seek · n next · q quit";
+    int left_vis = 2 + 6 + 6;
+    o += std::string(std::max(0, cols - left_vis - cpw(hints)), ' ');
+    o += A::W3; o += hints;
+    o += A::RST;
+
+    o += "\033[?2026l";
+    emit(o);
+}
 inline void draw_search(const Player& p, const std::string& query,
                         const std::vector<int>& matches, int mrow) {
     TSz sz = tsz(); int cols = sz.cols, rows = sz.rows;
@@ -354,7 +441,7 @@ inline void draw_search(const Player& p, const std::string& query,
     // ── Status bar ────────────────────────────────────────────────────────────
     o += A::BG_STAT;
     if (total == 0) {
-        o += A::AMB; o += "  sin coincidencias";
+        o += A::AMB; o += "  no matches";
         o += std::string(std::max(0, cols - 20), ' ');
     } else {
         char tc[24];
@@ -362,7 +449,7 @@ inline void draw_search(const Player& p, const std::string& query,
         o += A::W2; o += tc;
         o += std::string(std::max(0, cols - 62), ' ');
         o += A::W3;
-        o += " ↑/↓ seleccionar · Enter reproducir · Esc cancelar";
+        o += " ↑/↓ select · Enter play · Esc cancel";
     }
     o += A::RST;
 
