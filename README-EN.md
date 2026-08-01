@@ -11,7 +11,7 @@
                    ++ C++ Terminal Music Player
 ```
 
-> [🇦🇷 Español](README.md) | 🇬🇧 English | [🇩🇪 Deutsch](README-DE.md) | [🇧🇷 Português](README-PT-BR.md) | [🇫🇷 Français](README-FR.md) | [🇮🇹 Italiano](README-IT.md)
+> [🇦🇷 Español](README.md) | 🇬🇧 English | [🇩🇪 Deutsch](README-DE.md) | [🇧🇷 Português](README-PT-BR.md) | [🇫🇷 Français](README-FR.md) | [🇮🇹 Italiano](README-IT.md) | [🇷🇺 Русский](README-RU.md)
 
 **CMUS++** is a terminal music player written in C++17. Ultra-lightweight, blazingly fast, keyboard-driven, and completely free of graphical dependencies.
 
