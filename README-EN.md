@@ -11,13 +11,14 @@
                    ++ C++ Terminal Music Player
 ```
 
-> [🇦🇷 Español](README.md) | 🇬🇧 English | [🇩🇪 Deutsch](README-DE.md) | [🇧🇷 Português](README-PT-BR.md) | [🇫🇷 Français](README-FR.md) | [🇮🇹 Italiano](README-IT.md) | [🇷🇺 Русский](README-RU.md)
+> [ Español](README.md) | English | [ Deutsch](README-DE.md) | [ Português](README-PT-BR.md) | [ Français](README-FR.md) | [ Italiano](README-IT.md) | [ Русский](README-RU.md)
 
 **CMUS++** is a terminal music player written in C++17. Ultra-lightweight, blazingly fast, keyboard-driven, and completely free of graphical dependencies.
 
 **Features:**
 *   **Formats:** MP3, FLAC, WAV, OGG, OPUS, AIFF.
 *   **Album art:** Extracts embedded covers from MP3, FLAC, OGG/OPUS + fallback to cover.jpg/png.
+*   **Lyrics:** Synchronized `.lrc` + lyrics embedded in the file tags (USLT/LYRICS), 100% offline.
 *   **Cross-platform:** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Customizable:** 86 built-in themes + support for custom XML themes.
 *   **Fast:** Zero loading times, efficient decoding, and flicker-free rendering.
@@ -101,7 +102,7 @@ inputs.my-pkgs.packages.${system}.cmuspp
 
 ---
 
-## 🖼️ Album Art
+## Album Art
 
 CMUS++ automatically extracts and displays album art:
 
@@ -116,6 +117,26 @@ CMUS++ automatically extracts and displays album art:
 
 ---
 
+## Lyrics
+
+Press `l` inside the player to view the song's lyrics full-screen (hides the list). 100% offline — no network, no external services. Lyrics are resolved like this:
+
+1. **Synchronized `.lrc`** next to the song (e.g. `song.mp3` → `song.lrc`). The current line is highlighted and advances in sync with playback.
+2. **Lyrics embedded in the file's tags** (USLT frame in MP3, LYRICS field in FLAC/OGG). Shown as static text, scrollable with `↑`/`↓`.
+
+`.lrc` format:
+
+```
+[ti:Title]
+[ar:Artist]
+[00:12.50]First line
+[00:24.00]Second line
+```
+
+Supports `[mm:ss]` / `[mm:ss.xx]` timestamps, multiple timestamps per line (`[00:12][00:24]text`) and the `[offset:±ms]` tag.
+
+---
+
 ## Controls
 
 CMUS++ is designed to be used entirely without a mouse.
@@ -125,11 +146,12 @@ CMUS++ is designed to be used entirely without a mouse.
 | `↑` / `↓` (or `k`/`j`) | Navigate list |
 | `Enter` | Play track / Enter folder |
 | `Space` | Pause / Resume |
-| `←` / `→` (or `h`/`l`) | Seek backward/forward 5s (In browser: Go up a level) |
+| `←` / `→` (or `h`) | Seek backward/forward 5s (In browser: Go up a level) |
 | `n` / `p` | Next / Previous track |
 | `+` / `-` | Volume Up / Down |
 | `s` | Toggle Shuffle |
 | `r` | Toggle Repeat |
+| `l` | Show/hide lyrics (.lrc or embedded tags) full-screen |
 | `/` | Search a track in the current folder (type to filter, `Enter` plays) |
 | `t` | Cycle color theme |
 | `o` | Open file browser |
