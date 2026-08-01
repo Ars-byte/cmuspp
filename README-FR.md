@@ -11,13 +11,14 @@
                     ++ C++ Terminal Music Player
 ```
 
-> [🇦🇷 Español](README.md) | [🇬🇧 English](README-EN.md) | [🇩🇪 Deutsch](README-DE.md) | [🇧🇷 Português](README-PT-BR.md) | 🇫🇷 Français | [🇮🇹 Italiano](README-IT.md) | [🇷🇺 Русский](README-RU.md)
+> [ Español](README.md) | [ English](README-EN.md) | [ Deutsch](README-DE.md) | [ Português](README-PT-BR.md) | Français | [ Italiano](README-IT.md) | [ Русский](README-RU.md)
 
 **CMUS++** est un lecteur de musique pour terminal écrit en C++17. Ultra-léger, extrêmement rapide, piloté au clavier et sans dépendances graphiques.
 
 **Fonctionnalités :**
 *   **Formats :** MP3, FLAC, WAV, OGG, OPUS, AIFF.
 *   **Pochettes :** Extraction des pochettes intégrées MP3, FLAC, OGG/OPUS + repli sur cover.jpg/png.
+*   **Paroles :** `.lrc` synchronisées + paroles intégrées dans les tags (USLT/LYRICS), 100 % hors ligne.
 *   **Multiplateforme :** Linux (ALSA), macOS (CoreAudio), Windows (WinMM).
 *   **Personnalisable :** 86 thèmes intégrés + prise en charge des thèmes XML personnalisés.
 *   **Rapide :** Aucun temps de chargement, décodage efficace et rendu sans scintillement.
@@ -99,7 +100,7 @@ inputs = {
 
 ---
 
-## 🖼️ Pochettes d'album
+## Pochettes d'album
 
 CMUS++ extrait et affiche automatiquement les pochettes d'album :
 
@@ -114,6 +115,26 @@ CMUS++ extrait et affiche automatiquement les pochettes d'album :
 
 ---
 
+## Paroles
+
+Appuyez sur `l` dans le lecteur pour afficher les paroles de la chanson en plein écran (masque la liste). 100 % hors ligne — aucun réseau, aucun service externe. Les paroles sont résolues ainsi :
+
+1. **`.lrc` synchronisé** à côté de la chanson (ex. : `chanson.mp3` → `chanson.lrc`). La ligne courante est mise en évidence et avance en synchronisation avec la lecture.
+2. **Paroles intégrées dans les tags** du fichier lui-même (frame `USLT` en MP3, champ `LYRICS` en FLAC/OGG). Affichées en texte statique, défilables avec `↑`/`↓`.
+
+Format `.lrc` :
+
+```
+[ti:Titre]
+[ar:Artiste]
+[00:12.50]Première ligne
+[00:24.00]Deuxième ligne
+```
+
+Prend en charge les timestamps `[mm:ss]` / `[mm:ss.xx]`, plusieurs timestamps par ligne (`[00:12][00:24]texte`) et le tag `[offset:±ms]`.
+
+---
+
 ## Commandes
 
 CMUS++ est conçu pour être utilisé entièrement sans souris.
@@ -123,11 +144,12 @@ CMUS++ est conçu pour être utilisé entièrement sans souris.
 | `↑` / `↓` (ou `k`/`j`) | Naviguer dans la liste |
 | `Enter` | Lire / Entrer dans le dossier |
 | `Espace` | Pause / Reprendre |
-| `←` / `→` (ou `h`/`l`) | Reculer 5s / Avancer 5s (Dans le navigateur : remonter d'un niveau) |
+| `←` / `→` (ou `h`) | Reculer 5s / Avancer 5s (Dans le navigateur : remonter d'un niveau) |
 | `n` / `p` | Piste suivante / Précédente |
 | `+` / `-` | Volume + / - |
 | `s` | Activer/Désactiver Shuffle (Aléatoire) |
 | `r` | Activer/Désactiver Repeat (Boucle) |
+| `l` | Afficher/masquer les paroles (.lrc ou intégrées) en plein écran |
 | `/` | Rechercher une piste dans le dossier actuel (tapez pour filtrer, `Enter` lit) |
 | `t` | Changer le thème de couleurs |
 | `o` | Ouvrir l'explorateur de fichiers |
