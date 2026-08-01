@@ -28,9 +28,13 @@
 
 ## Aperçus
 
-| Lecteur (avec un thème .xml) |
+| Lecteur | Lecteur |
+|:---:|:---:|
+|<img width="800" alt="vue principale" src="previews/main.png" />|<img width="800" alt="vue principale" src="previews/review.png" />|
+
+| Fenêtre À propos |
 |:---:|
-|<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2b6cf564-ecc1-4422-90fc-3db0f896fb4d" />|
+|<img width="500" alt="fenêtre à propos" src="previews/about.png" />|
 
 ---
 
