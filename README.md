@@ -30,9 +30,13 @@
 
 
 
-| Reproductor (Con un theme .xml) |
+| Reproductor | Reproductor |
+|:---:|:---:|
+|<img width="800" alt="vista principal" src="previews/main.png" />|<img width="800" alt="vista principal" src="previews/review.png" />|
+
+| Ventana About (Información) |
 |:---:|
-|<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/1af7496e-e625-49ea-a0df-276b549e8e7d" />
+|<img width="500" alt="ventana about" src="previews/about.png" />|
 
 
 
