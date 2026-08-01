@@ -28,9 +28,13 @@
 
 ## Previews
 
-| Player (com tema .xml) |
+| Player | Player |
+|:---:|:---:|
+|<img width="800" alt="visualização principal" src="previews/main.png" />|<img width="800" alt="visualização principal" src="previews/review.png" />|
+
+| Janela Sobre (About) |
 |:---:|
-|<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2b6cf564-ecc1-4422-90fc-3db0f896fb4d" />|
+|<img width="500" alt="janela sobre" src="previews/about.png" />|
 
 ---
 
