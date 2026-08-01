@@ -32,6 +32,7 @@ namespace A {
     inline const char* NOTE   = "♪";
     inline const char* ARR    = "›";
     inline const char* DIR_I  = "📁";
+    inline const char* SEARCH_I = "🔍";
     inline const char* DIR_O  = "📂";
     inline const char* AUDIO_I= "≈";
     inline const char* SHUF_I = "⇄";

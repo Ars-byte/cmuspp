@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <string>
+#include <vector>
 
 namespace fs = std::filesystem;
 
@@ -45,6 +46,22 @@ int main() {
     static constexpr double DRAW_INTERVAL = 0.125; 
     TSz last_tsz = tsz();
 
+    // ── Search state ──────────────────────────────────────────────────────────
+    bool searching = false;
+    std::string query;
+    std::vector<int> matches;
+    int mrow = 0;
+
+    auto rebuild_matches = [&]() {
+        matches.clear();
+        std::string q = icase_sort_key(query);
+        for (int i = 0; i < (int)player.songs.size(); ++i)
+            if (icase_sort_key(player.songs[i]).find(q) != std::string::npos)
+                matches.push_back(i);
+        if (matches.empty()) mrow = 0;
+        else if (mrow >= (int)matches.size()) mrow = (int)matches.size() - 1;
+    };
+
     while (true) {
         if (player.songs.empty()) {
             emit(std::string(A::CLS) + A::SHOW); flush_out();
@@ -62,6 +79,35 @@ int main() {
         if (!player.playing_now.empty() && !player.paused && player.is_ended()) {
             player.next_song();
             draw_player(player, g_themes);
+            last_draw = mono_now();
+            continue;
+        }
+
+        // ── Search mode ───────────────────────────────────────────────────────
+        if (searching) {
+            std::string k = read_key(rt, -1);
+            bool leave = false;
+
+            if      (k == "\x1b" || k == "\x03" || k == "\x04")  leave = true;
+            else if (k == "\x7f") { if (!query.empty()) { query.pop_back(); rebuild_matches(); } }
+            else if (k == "\x1b[A" || k == "k")
+                { if (!matches.empty()) mrow = (mrow - 1 + (int)matches.size()) % (int)matches.size(); }
+            else if (k == "\x1b[B" || k == "j")
+                { if (!matches.empty()) mrow = (mrow + 1) % (int)matches.size(); }
+            else if (k == "\r") {
+                if (!matches.empty()) {
+                    player.row = matches[mrow];
+                    player.play_current();
+                }
+                leave = true;
+            }
+            else if (k.size() == 1 && (unsigned char)k[0] >= 0x20 && (unsigned char)k[0] < 0x7f) {
+                query += k;
+                rebuild_matches();
+            }
+
+            if (leave) { searching = false; draw_player(player, g_themes); }
+            else       { draw_search(player, query, matches, mrow); }
             last_draw = mono_now();
             continue;
         }
@@ -110,6 +156,15 @@ int main() {
         else if (key == "a" || key == "A") {
             draw_about();
             read_key(rt, -1); // cualquier tecla cierra el about
+        }
+        else if (key == "/") {
+            searching = true;
+            query.clear();
+            mrow = player.row;
+            rebuild_matches();
+            draw_search(player, query, matches, mrow);
+            last_draw = mono_now();
+            redraw = false;
         }
         else if (key == "q" || key == "Q") break;
         else redraw = resized;

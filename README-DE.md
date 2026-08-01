@@ -128,6 +128,7 @@ CMUS++ ist für die vollständige Bedienung ohne Maus ausgelegt.
 | `+` / `-` | Lautstärke erhöhen/verringern |
 | `s` | Zufallswiedergabe umschalten |
 | `r` | Wiederholung umschalten |
+| `/` | Titel im aktuellen Ordner suchen (tippen zum Filtern, `Enter` abspielen) |
 | `t` | Farbschema wechseln |
 | `o` | Dateibrowser öffnen |
 | `a` | Info anzeigen (Über) |

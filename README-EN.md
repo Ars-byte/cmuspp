@@ -130,6 +130,7 @@ CMUS++ is designed to be used entirely without a mouse.
 | `+` / `-` | Volume Up / Down |
 | `s` | Toggle Shuffle |
 | `r` | Toggle Repeat |
+| `/` | Search a track in the current folder (type to filter, `Enter` plays) |
 | `t` | Cycle color theme |
 | `o` | Open file browser |
 | `a` | Show info (About) |

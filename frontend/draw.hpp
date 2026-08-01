@@ -240,7 +240,7 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     o += A::W2;
 
     static const char* hints =
-        " · ↑/↓ nav · Enter play · Space pause · ←/→ seek · o browse · a about · t theme · q quit";
+        " · ↑/↓ nav · Enter play · Space pause · ←/→ seek · / search · o browse · a about · t theme · q quit";
     int left_vis = 2 + 12 + (int)strlen(tc) + 7 + 7;
     int hfill = std::max(0, cols - left_vis - cpw(hints));
     o += std::string(hfill, ' ');
@@ -248,6 +248,94 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     o += A::RST;
 
     o += "\033[?2026l"; // ESU
+    emit(o);
+}
+
+// ── Draw: search overlay ──────────────────────────────────────────────────────
+inline void draw_search(const Player& p, const std::string& query,
+                        const std::vector<int>& matches, int mrow) {
+    TSz sz = tsz(); int cols = sz.cols, rows = sz.rows;
+
+    int max_vis = std::max(1, rows - 3); // header + search bar + status bar
+    int total   = (int)matches.size();
+
+    int start = 0, end = 0;
+    if (total > 0) {
+        start = std::max(0, mrow - max_vis / 2);
+        end   = std::min(total, start + max_vis);
+        if (end == total) start = std::max(0, total - max_vis);
+    }
+
+    std::string o;
+    o.reserve((size_t)cols * rows * 8);
+    o += "\033[?2026h";
+    o += "\033[H\033[2J";
+    o += A::HIDE;
+
+    // ── Header row ────────────────────────────────────────────────────────────
+    o += A::BG_HDR; o += A::BOLD;
+    o += " "; o += A::GRN; o += A::NOTE;
+    o += " "; o += A::W1; o += "CMUS++";
+    o += A::W2; o += center_in("SEARCH", cols - 10);
+    o += A::RST; o += "\n";
+
+    // ── Search input bar ──────────────────────────────────────────────────────
+    std::string input = " " + std::string(A::SEARCH_I) + "  " + query;
+    o += A::BG_STAT; o += A::W3;
+    o += input;
+    o += A::GRN; o += A::BOLD; o += "▎"; o += A::W2;
+    o += std::string(std::max(0, cols - cpw(input) - 1), ' ');
+    o += A::RST; o += "\n";
+
+    // ── Result rows ───────────────────────────────────────────────────────────
+    for (int row_i = 0; row_i < max_vis; ++row_i) {
+        int i = start + row_i;
+        if (i < end) {
+            const std::string& s = p.songs[matches[i]];
+            bool cur  = (i == mrow);
+            bool play = (s == p.playing_now);
+            std::string disp = strip_ext(s);
+
+            if (cur && play) {
+                o += A::BG_PLAY; o += A::BOLD;
+                o += " "; o += A::PLAY_I; o += "  ";
+                o += pad_r(disp, cols - 5);
+            } else if (cur) {
+                o += A::BG_SEL; o += A::BOLD;
+                o += "  "; o += A::ARR; o += "  ";
+                o += pad_r(disp, cols - 5);
+            } else if (play) {
+                o += A::GRN;
+                o += " "; o += A::NOTE; o += "  ";
+                o += pad_r(disp, cols - 5);
+            } else {
+                o += A::W3;
+                o += "     ";
+                o += pad_r(disp, cols - 5);
+            }
+        } else {
+            o += A::RST;
+            o += std::string(cols, ' ');
+        }
+        o += A::RST; o += "\n";
+    }
+
+    // ── Status bar ────────────────────────────────────────────────────────────
+    o += A::BG_STAT;
+    if (total == 0) {
+        o += A::AMB; o += "  sin coincidencias";
+        o += std::string(std::max(0, cols - 20), ' ');
+    } else {
+        char tc[24];
+        snprintf(tc, sizeof(tc), "  %d/%d", mrow + 1, total);
+        o += A::W2; o += tc;
+        o += std::string(std::max(0, cols - 62), ' ');
+        o += A::W3;
+        o += " ↑/↓ seleccionar · Enter reproducir · Esc cancelar";
+    }
+    o += A::RST;
+
+    o += "\033[?2026l";
     emit(o);
 }
 

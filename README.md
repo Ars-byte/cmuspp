@@ -132,6 +132,7 @@ CMUS++ está diseñado para usarse completamente sin ratón.
 | `+` / `-` | Subir / Bajar volumen |
 | `s` | Activar/Desactivar Shuffle (Aleatorio) |
 | `r` | Activar/Desactivar Repeat (Bucle) |
+| `/` | Buscar una canción en la carpeta actual (escribe para filtrar, `Enter` reproduce) |
 | `t` | Cambiar tema de color |
 | `o` | Abrir explorador de archivos |
 | `a` | Ver información (About) |
