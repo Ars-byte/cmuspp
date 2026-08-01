@@ -28,13 +28,9 @@
 
 ## Previews
 
-| Player | Player |
-|:---:|:---:|
-|<img width="800" alt="visualização principal" src="previews/main.png" />|<img width="800" alt="visualização principal" src="previews/review.png" />|
-
-| Janela Sobre (About) |
-|:---:|
-|<img width="500" alt="janela sobre" src="previews/about.png" />|
+<img width="800" src="previews/main.png" />
+<img width="800" src="previews/review.png" />
+<img width="500" src="previews/about.png" />
 
 ---
 
