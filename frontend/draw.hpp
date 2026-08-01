@@ -63,6 +63,37 @@ inline int count_au_cached(const BD& d, const std::string& parent,
 }
 
 // ── Draw: player ──────────────────────────────────────────────────────────────
+// Build one playlist row's text with metadata columns (artist/album/title/
+// duration/bitrate). Columns shrink adaptively to the available width.
+inline std::string meta_row_text(const Player& p, int i, int avail) {
+    const TrackMeta& m = p.meta(i);
+    std::string title  = !m.title.empty()  ? m.title  : strip_ext(p.songs[i]);
+    std::string artist = m.artist;
+    std::string album  = m.album;
+    std::string dur    = m.duration > 0 ? fmt_t(m.duration) : "";
+    std::string br     = m.bitrate  > 0 ? std::to_string(m.bitrate) : "";
+
+    int art_w = 0, alb_w = 0, br_w = 0, dur_w = 6;
+    if (avail >= 34) art_w = std::clamp((int)(avail * 0.22), 8, 16);
+    if (avail >= 44) alb_w = std::clamp((int)(avail * 0.22), 8, 16);
+    if (avail >= 58) br_w  = 5;
+    if (avail - dur_w - br_w - art_w - alb_w < 10) { art_w = alb_w = 0; }
+    if (avail - dur_w - br_w - art_w - alb_w < 10) { br_w = 0; }
+    if (avail - dur_w - br_w - art_w - alb_w < 10) { dur_w = 0; }
+
+    int title_w = avail - dur_w - br_w
+                - (art_w ? art_w + 1 : 0) - (alb_w ? alb_w + 1 : 0);
+
+    std::string o;
+    o.reserve((size_t)avail * 2);
+    if (art_w) { o += A::W3; o += pad_r(artist, art_w); o += " "; }
+    if (alb_w) { o += A::W3; o += pad_r(album,  alb_w); o += " "; }
+    o += pad_r(title, title_w);
+    if (dur_w) { o += A::W3; o += pad_r(dur, dur_w); }
+    if (br_w)  { o += A::W3; o += pad_r(br,  br_w); }
+    return o;
+}
+
 inline void draw_player(Player& p, const ThemeManager& mgr) {
     TSz sz = tsz(); int cols = sz.cols, rows = sz.rows;
 
@@ -151,24 +182,24 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
             const std::string& s = p.songs[i];
             bool cur  = (i == p.row);
             bool play = (s == p.playing_now);
-            std::string disp = strip_ext(s);
+            std::string disp = meta_row_text(p, i, playlist_w - 5);
 
             if (cur && play) {
                 o += A::BG_PLAY; o += A::BOLD;
                 o += " "; o += A::PLAY_I; o += "  ";
-                o += pad_r(disp, playlist_w - 5);
+                o += disp;
             } else if (cur) {
                 o += A::BG_SEL; o += A::BOLD;
                 o += "  "; o += A::ARR; o += "  ";
-                o += pad_r(disp, playlist_w - 5);
+                o += disp;
             } else if (play) {
                 o += A::GRN;
                 o += " "; o += A::NOTE; o += "  ";
-                o += pad_r(disp, playlist_w - 5);
+                o += disp;
             } else {
                 o += A::W3;
                 o += "     ";
-                o += pad_r(disp, playlist_w - 5);
+                o += disp;
             }
         } else {
             o += A::RST;

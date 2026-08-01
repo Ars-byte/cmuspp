@@ -1,11 +1,13 @@
 #pragma once
 #include "audio_out.hpp"
 #include "decoder.hpp"
+#include "metadata.hpp"
 
 #include <algorithm>
 #include <filesystem>
 #include <random>
 #include <string>
+#include <thread>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -48,11 +50,30 @@ struct Player {
     std::mt19937 rng{std::random_device{}()};
     bool ao_ready = false;
 
+    // ── Metadata (background loader) ─────────────────────────────────────────
+    std::vector<TrackMeta> metas;
+    std::atomic<int>    meta_ready{0};   // how many metas parsed so far
+    std::thread         meta_thr;
+
     Player() {
         if (!ao.open()) { fputs("cmus++: cannot open audio device\n", stderr); exit(1); }
         ao.gain.store(volume);
     }
-    ~Player() { dec.stop(); ao.stop(); }
+    ~Player() {
+        dec.stop(); ao.stop();
+        if (meta_thr.joinable()) meta_thr.join();
+    }
+
+    // index-aligned accessor; only returns rows already parsed by the loader
+    const TrackMeta& meta(int i) const {
+        static const TrackMeta empty;
+        return (i >= 0 && i < (int)metas.size() &&
+                i < meta_ready.load(std::memory_order_acquire))
+               ? metas[i] : empty;
+    }
+    bool meta_done() const {
+        return meta_ready.load(std::memory_order_acquire) >= (int)metas.size();
+    }
 
     double elapsed() const {
         if (playing_now.empty()) return 0.0;
@@ -164,5 +185,19 @@ struct Player {
             [](const std::string& a, const std::string& b) {
                 return icase_sort_key(a) < icase_sort_key(b);
             });
+
+        // Reload metadata in background (join first so `songs`/`dir`/`metas`
+        // are not touched while a previous loader may still be running).
+        if (meta_thr.joinable()) meta_thr.join();
+        metas.assign(songs.size(), TrackMeta{});
+        meta_ready.store(0, std::memory_order_release);
+        if (!songs.empty()) {
+            meta_thr = std::thread([this]() {
+                for (size_t i = 0; i < songs.size(); ++i) {
+                    metas[i] = read_meta((fs::path(dir) / songs[i]).string());
+                    meta_ready.store((int)i + 1, std::memory_order_release);
+                }
+            });
+        }
     }
 };

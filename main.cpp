@@ -128,6 +128,13 @@ int main() {
                     draw_player(player, g_themes);
                     last_draw = now;
                 }
+            } else if (!player.meta_done()) {
+                // Keep refreshing while the metadata loader populates columns
+                double now = mono_now();
+                if (now - last_draw >= 0.25) {
+                    draw_player(player, g_themes);
+                    last_draw = now;
+                }
             }
             continue;
         }
