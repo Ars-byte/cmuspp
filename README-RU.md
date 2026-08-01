@@ -28,9 +28,13 @@
 
 ## Превью
 
-| Плеер (с темой .xml) |
+| Плеер | Плеер |
+|:---:|:---:|
+|<img width="800" alt="главный вид" src="previews/main.png" />|<img width="800" alt="главный вид" src="previews/review.png" />|
+
+| Окно «О программе» |
 |:---:|
-|<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2b6cf564-ecc1-4422-90fc-3db0f896fb4d" />|
+|<img width="500" alt="окно о программе" src="previews/about.png" />|
 
 ---
 
