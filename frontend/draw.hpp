@@ -569,7 +569,7 @@ inline void draw_about() {
         "Platforms Linux (ALSA) macOS Windows",
         "",
         "Copyright (c) 2026 Ars-btw",
-        "v1.0.0  ·  MIT License",
+        "v1.1.0  ·  MIT License",
     };
 
     int inner_w = 0;

@@ -36,10 +36,10 @@
 
 ## Téléchargement (Release)
 
-Envie de simplement essayer ? Téléchargez le binaire précompilé depuis la [**version v1.0.0**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.0.0) (Linux x86_64) :
+Envie de simplement essayer ? Téléchargez le binaire précompilé depuis la [**version v1.1.0**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.1.0) (Linux x86_64) :
 
 ```bash
-wget https://github.com/Ars-byte/cmuspp/releases/download/v1.0.0/cmuspp-linux-x86_64
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-linux-x86_64
 chmod +x cmuspp-linux-x86_64
 ./cmuspp-linux-x86_64
 ```

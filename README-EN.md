@@ -36,10 +36,10 @@
 
 ## Download (Release)
 
-Just want to try it? Grab the prebuilt binary from the [**v1.0.0 release**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.0.0) (Linux x86_64):
+Just want to try it? Grab the prebuilt binary from the [**v1.1.0 release**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.1.0) (Linux x86_64):
 
 ```bash
-wget https://github.com/Ars-byte/cmuspp/releases/download/v1.0.0/cmuspp-linux-x86_64
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-linux-x86_64
 chmod +x cmuspp-linux-x86_64
 ./cmuspp-linux-x86_64
 ```
