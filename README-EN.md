@@ -28,13 +28,9 @@
 
 ## Previews
 
-| Player | Player |
-|:---:|:---:|
-|<img width="800" alt="main view" src="previews/main.png" />|<img width="800" alt="main view" src="previews/review.png" />|
-
-| About window |
-|:---:|
-|<img width="500" alt="about window" src="previews/about.png" />|
+<img width="800" src="previews/main.png" />
+<img width="800" src="previews/review.png" />
+<img width="500" src="previews/about.png" />
 
 ---
 
