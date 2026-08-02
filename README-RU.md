@@ -96,28 +96,44 @@ chmod +x bootstrap.sh
 
 ---
 
-## Для NIXOS
+## Для NixOS
 
-### Выполните эту команду:
+Этот репозиторий — флейк Nix. Попробовать без установки:
+
+```
+nix run github:Ars-byte/cmuspp
+```
+
+Чтобы установить в систему, добавьте флейк как input:
+
+```
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    cmuspp.url = "github:Ars-byte/cmuspp";
+  };
+}
+```
+
+```
+{ inputs, pkgs, ... }:
+{
+  environment.systemPackages = [ inputs.cmuspp.packages.${pkgs.system}.cmuspp ];
+}
+```
+
+Или установите императивно:
+
+```
+nix profile install github:Ars-byte/cmuspp
+```
+
+Также можно установить из флейка mikuri (соавтор проекта):
 
 ```
 nix profile add github:mikuri12/my-lazy-nixos-pkgs#cmuspp
 ```
-### Если вы хотите использовать flakes:
 
-```
-inputs = {
-  my-pkgs.url = "github:mikuri12/my-lazy-nixos-pkgs";
-};
-```
-```
-{ inputs, pkgs, system, ... }:
-{
-  environment.systemPackages = [
-    inputs.my-pkgs.packages.${system}.cmuspp
-  ];
-}
-```
 
 ---
 
