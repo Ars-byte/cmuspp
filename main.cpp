@@ -2,8 +2,6 @@
 #include "backend/player.hpp"
 
 #include <csignal>
-#include <cstdlib>
-#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -78,7 +76,7 @@ int main() {
 
     while (true) {
         if (player.songs.empty()) {
-            emit(std::string(A::CLS) + A::SHOW); flush_out();
+            emit(std::string(A::CLS) + A::SHOW);
             sel = browse(rt);
             if (!sel.empty()) {
                 player.load_dir(sel);
@@ -184,7 +182,7 @@ int main() {
         else if (key == "l" || key == "L")       { lyrics_mode = !lyrics_mode; lyr_scroll = 0; }
         else if (key == "t" || key == "T")       apply_theme(g_themes, g_themes.current + 1);
         else if (key == "o" || key == "O") {
-            emit(std::string(A::CLS) + A::SHOW); flush_out();
+            emit(std::string(A::CLS) + A::SHOW);
             std::string s2 = browse(rt);
             if (!s2.empty()) player.load_dir(s2);
         }
