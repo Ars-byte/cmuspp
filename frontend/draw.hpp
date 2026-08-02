@@ -77,8 +77,6 @@ inline int count_au_cached(const BD& d, const std::string& parent,
 inline std::string meta_row_text(const Player& p, int i, int avail) {
     const TrackMeta& m = p.meta(i);
     std::string title  = !m.title.empty()  ? m.title  : strip_ext(p.songs[i]);
-    std::string artist = m.artist;
-    std::string album  = m.album;
     std::string dur    = m.duration > 0 ? fmt_t(m.duration) : "";
     std::string br     = m.bitrate  > 0 ? std::to_string(m.bitrate) : "";
 
@@ -95,8 +93,8 @@ inline std::string meta_row_text(const Player& p, int i, int avail) {
 
     std::string o;
     o.reserve((size_t)avail * 2);
-    if (art_w) { o += A::W3; o += pad_r(artist, art_w); o += " "; }
-    if (alb_w) { o += A::W3; o += pad_r(album,  alb_w); o += " "; }
+    if (art_w) { o += A::W3; o += pad_r(m.artist, art_w); o += " "; }
+    if (alb_w) { o += A::W3; o += pad_r(m.album,  alb_w); o += " "; }
     o += pad_r(title, title_w);
     if (dur_w) { o += A::W3; o += pad_r(dur, dur_w); }
     if (br_w)  { o += A::W3; o += pad_r(br,  br_w); }
