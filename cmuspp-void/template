@@ -1,0 +1,17 @@
+# Template file for 'cmuspp'
+pkgname=cmuspp-void
+version=1.1.1
+revision=2
+short_desc="is a terminal music player written in C++17. Ultra-lightweight"
+maintainer="Ars-Byte's"
+license="MIT"
+homepage="https://github.com/Ars-byte/cmuspp"
+distfiles="https://github.com/Ars-byte/cmuspp/releases/download/v${version}/cmuspp-linux-x86_64"
+checksum="1710d77edee8ae167cc7b91214c3e36746eabb812dde2c04c327e1b02e948190"
+depends="libsndfile alsa-lib libjpeg-turbo libpng"
+do_install() {
+	vmkdir usr/bin 
+
+	# Instalar el binario compilado
+	vinstall cmuspp-linux-x86_64
+}
