@@ -48,6 +48,27 @@ chmod +x cmuspp-linux-x86_64
 
 ---
 
+## XBPS Install (Void Linux)
+
+On Void Linux you can install CMUS++ from the prebuilt `.xbps` package:
+
+```bash
+# 1. Download the package
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-1.1.0_1.x86_64.xbps
+
+# 2. Index it as a local repository
+sudo mkdir -p /var/db/xbps/cmuspp
+sudo mv cmuspp-1.1.0_1.x86_64.xbps /var/db/xbps/cmuspp/
+sudo xbps-rindex -a /var/db/xbps/cmuspp/*.xbps
+
+# 3. Install (dependencies resolve from the Void repos)
+sudo xbps-install -S --repository=/var/db/xbps/cmuspp cmuspp
+```
+
+The package installs the binary to `/usr/bin/cmuspp` plus the 86 built-in themes and the extra XML themes in `/usr/share/cmuspp/themes/`.
+
+---
+
 ## Installation & Build
 
 ### 1. Install dependencies
