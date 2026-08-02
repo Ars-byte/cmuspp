@@ -97,7 +97,6 @@ inline void emit(const std::string& s) {
         p += n; left -= n;
     }
 }
-inline void flush_out() {}
 
 // ── String layout helpers ────────────────────────────────────────────────────
 inline std::string rep(const std::string& s, int n) {
