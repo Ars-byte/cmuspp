@@ -17,12 +17,11 @@
 namespace A {
     inline const char* RST  = "\033[0m";
     inline const char* BOLD = "\033[1m";
-    inline const char* DIM  = "\033[2m";
     inline const char* CLS  = "\033[H\033[2J";
     inline const char* HIDE = "\033[?25l";
     inline const char* SHOW = "\033[?25h";
 
-    inline const char* W0="", *W1="", *W2="", *W3="";
+    inline const char* W1="", *W2="", *W3="";
     inline const char* GRN="", *AMB="";
     inline const char* BG_HDR="", *BG_SEL="", *BG_PLAY="", *BG_STAT="";
 
@@ -40,7 +39,6 @@ namespace A {
     inline const char* VOL_I  = "▐";
     inline const char* PROG   = "━";
     inline const char* TRACK  = "─";
-    inline const char* DOT    = "●";
     inline const char* FULL   = "█";
     inline const char* EMPTY  = "░";
     inline const char* HL     = "─";
@@ -65,7 +63,7 @@ inline int load_theme_index() {
 inline void apply_theme(ThemeManager& mgr, int idx) {
     mgr.set(idx);
     const Theme& t = mgr.active();
-    A::W0      = t.fg0.c_str();   A::W1  = t.fg1.c_str();
+    A::W1      = t.fg1.c_str();
     A::W2      = t.fg2.c_str();   A::W3  = t.fg3.c_str();
     A::GRN     = t.acc.c_str();   A::AMB = t.warn.c_str();
     A::BG_HDR  = t.bghdr.c_str(); A::BG_SEL  = t.bgsel.c_str();
