@@ -169,11 +169,15 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
     o += " "; o += A::GRN; o += A::NOTE;
     o += " "; o += A::W1; o += "CMUS++";
     {
-        std::string dn = fs::path(p.dir).filename().string();
-        if (dn.empty()) dn = p.dir;
+        static std::string cache_dn, cache_dn_dir;
+        if (cache_dn_dir != p.dir) {
+            cache_dn_dir = p.dir;
+            cache_dn = fs::path(p.dir).filename().string();
+            if (cache_dn.empty()) cache_dn = p.dir;
+        }
 
         int theme_w = 2 + (int)mgr.active().name.size();
-        o += A::W2; o += center_in(dn, cols - 9 - theme_w);
+        o += A::W2; o += center_in(cache_dn, cols - 9 - theme_w);
         o += A::W3; o += " "; o += mgr.active().name; o += " ";
     }
     o += A::RST; o += "\n";
