@@ -1,11 +1,11 @@
 #!/bin/sh
 # Empaqueta cmuspp como .xbps para Void Linux y lo indexa en packages/.
-# Uso: ./packaging/make_xbps.sh [VERSION]   (default: 1.1.0)
+# Uso: ./packaging/make_xbps.sh [VERSION]   (default: 1.1.1)
 set -eu
 
 cd "$(dirname "$0")/.."   # raiz del repo
 
-VER="${1:-1.1.0}"
+VER="${1:-1.1.1}"
 PKG="cmuspp-${VER}_1"
 ARCH="x86_64"
 REPO_DIR="packages"
