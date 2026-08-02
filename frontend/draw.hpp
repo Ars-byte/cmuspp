@@ -675,11 +675,11 @@ inline std::string browse(RawTerm& rt, const std::string& start = "") {
                 d   = scan(cur);
                 cursor = scroll = 0;
                 if (d.dirs.empty() && !d.songs.empty()) {
-                    emit(std::string(A::CLS) + A::SHOW); flush_out();
+                    emit(std::string(A::CLS) + A::SHOW);
                     return cur;
                 }
             } else {
-                emit(std::string(A::CLS) + A::SHOW); flush_out();
+                emit(std::string(A::CLS) + A::SHOW);
                 return cur;
             }
         } else if (key == "\x1b[D" || key == "\x7f" || key == "h") {
@@ -697,7 +697,7 @@ inline std::string browse(RawTerm& rt, const std::string& start = "") {
             d = scan(cur);
             cursor = scroll = 0;
         } else if (key == "q" || key == "Q") {
-            emit(std::string(A::CLS) + A::SHOW); flush_out();
+            emit(std::string(A::CLS) + A::SHOW);
             return "";
         } else {
             redraw = resized;
