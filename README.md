@@ -82,6 +82,8 @@ Necesitas un compilador C++ y las librerías `libsndfile`, `libjpeg` y `libpng` 
 *   **Ubuntu / Debian:** `sudo apt install g++ libsndfile1-dev libasound2-dev libjpeg-dev libpng-dev`
 *   **Arch Linux:** `sudo pacman -S gcc libsndfile alsa-lib libjpeg-turbo libpng`
 *   **macOS:** `brew install libsndfile jpeg libpng` (requiere Homebrew)
+*   **Void Linux:** `sudo xbps-install -S gcc libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel
+`
   
 ### 2. Compilar
 
