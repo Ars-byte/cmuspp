@@ -95,31 +95,44 @@ chmod +x bootstrap.sh
 ```
 
 ---
-## For NIXOS
+## For NixOS
 
-### Run this command:
+This repository is a Nix flake. To try it without installing:
+
+```
+nix run github:Ars-byte/cmuspp
+```
+
+To install it system-wide, add the flake as an input:
+
+```
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    cmuspp.url = "github:Ars-byte/cmuspp";
+  };
+}
+```
+
+```
+{ inputs, pkgs, ... }:
+{
+  environment.systemPackages = [ inputs.cmuspp.packages.${pkgs.system}.cmuspp ];
+}
+```
+
+Or install it imperatively with:
+
+```
+nix profile install github:Ars-byte/cmuspp
+```
+
+You can also install it from mikuri's flake (project collaborator):
 
 ```
 nix profile add github:mikuri12/my-lazy-nixos-pkgs#cmuspp
 ```
-### If you want to use flakes:
 
-```
-inputs = {
-my-pkgs.url = "github:mikuri12/my-lazy-nixos-pkgs";
-
-}; 
-```
-```
-{ inputs, pkgs, system, ... }:
-{
-environment.systemPackages = [
-inputs.my-pkgs.packages.${system}.cmuspp
-
-];
-
-}
-```
 
 ---
 
