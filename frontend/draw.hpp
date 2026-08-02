@@ -11,17 +11,26 @@
 
 namespace fs = std::filesystem;
 
+// Case-insensitive suffix check without allocating a lowercase copy
+// (hot path: called per visible row every frame).
+inline bool ends_with_ic(const std::string& s, const char* ext) {
+    size_t el = strlen(ext);
+    if (s.size() <= el) return false;
+    for (size_t i = 0; i < el; ++i) {
+        unsigned char a = (unsigned char)s[s.size() - el + i];
+        if (a >= 'A' && a <= 'Z') a = (unsigned char)(a - 'A' + 'a');
+        if (a != (unsigned char)ext[i]) return false;
+    }
+    return true;
+}
+
 inline std::string strip_ext(const std::string& name) {
     static const char* exts[] = {
         ".mp3", ".flac", ".wav", ".ogg", ".opus", ".aiff", ".aif", ".au", nullptr
     };
-    std::string lc = name;
-    std::transform(lc.begin(), lc.end(), lc.begin(), ::tolower);
-    for (int i = 0; exts[i]; ++i) {
-        size_t el = strlen(exts[i]);
-        if (lc.size() > el && lc.compare(lc.size() - el, el, exts[i]) == 0)
-            return name.substr(0, name.size() - el);
-    }
+    for (int i = 0; exts[i]; ++i)
+        if (ends_with_ic(name, exts[i]))
+            return name.substr(0, name.size() - strlen(exts[i]));
     return name;
 }
 
