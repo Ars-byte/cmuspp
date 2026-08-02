@@ -126,10 +126,16 @@ inline void draw_player(Player& p, const ThemeManager& mgr) {
 
     static CoverCache cover_cache;
 
-    std::string full_path;
-    if (!p.playing_now.empty()) {
-        full_path = (fs::path(p.dir) / p.playing_now).string();
+    // fs::path joins allocate every frame; cache them (dir/song change rarely).
+    static std::string cache_dir, cache_now, cache_path;
+    if (p.dir != cache_dir || p.playing_now != cache_now) {
+        cache_dir  = p.dir;
+        cache_now  = p.playing_now;
+        cache_path = p.playing_now.empty()
+                     ? std::string{}
+                     : (fs::path(cache_dir) / cache_now).string();
     }
+    const std::string& full_path = cache_path;
 
     const int COVER_TERM_ROW = 2;
     const int COVER_TERM_COL = 1;
