@@ -12,12 +12,9 @@ checksum="d48c6892a22d7755c34e020a9a9560c72a7186a21247be29235f4cf9c8caeac0"
 
 depends="libsndfile alsa-lib libjpeg-turbo libpng"
 do_build(){
-	chmod +x bootstrap.sh
+        chmod +x bootstrap.sh
     ./bootstrap.sh
 }
-do_install() {
-	vmkdir usr/bin 
-
-	# Instalar el binario compilado
-	vinstall cmuspp
+do_install(){
+        vbin cmuspp
 }
