@@ -7,7 +7,7 @@ maintainer="Ars-Bytes"
 makedepends="gcc libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel"
 license="MIT"
 homepage="https://github.com/Ars-byte/cmuspp"
-distfiles="https://github.com/javiercplus/cmuspp/releases/download/1.1.1/cmuspp-main.tar.gz"
+distfiles="https://github.com/Ars-byte/cmuspp/releases/download/v${version}/cmuspp-main.tar.gz"
 checksum="d48c6892a22d7755c34e020a9a9560c72a7186a21247be29235f4cf9c8caeac0"
 
 depends="libsndfile alsa-lib libjpeg-turbo libpng"
