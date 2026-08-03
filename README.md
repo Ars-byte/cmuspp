@@ -220,4 +220,3 @@ Presiona `t` dentro de la app para cambiar de tema. Puedes crear tus propios tem
 
 ---
 **Licencia MIT** — Siéntete libre de modificar y usar el código.
-```
