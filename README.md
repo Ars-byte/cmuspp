@@ -57,9 +57,9 @@ chmod +x cmuspp-linux-x86_64
 ¿Usás Void Linux? Instalá CMUS++ desde el paquete `.xbps` precompilado:
 
 ```bash
-doas xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
+doas xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp
 #or with sudo
-sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
+sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp
 ```
 
 El paquete instala el binario en `/usr/bin/cmuspp`, los 86 temas integrados y los temas XML extra en `/usr/share/cmuspp/themes/`.
@@ -75,9 +75,8 @@ Necesitas un compilador C++ y las librerías `libsndfile`, `libjpeg` y `libpng` 
 *   **Ubuntu / Debian:** `sudo apt install g++ libsndfile1-dev libasound2-dev libjpeg-dev libpng-dev`
 *   **Arch Linux:** `sudo pacman -S gcc libsndfile alsa-lib libjpeg-turbo libpng`
 *   **macOS:** `brew install libsndfile jpeg libpng` (requiere Homebrew)
-*   **Void Linux:** `sudo xbps-install -S gcc libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel
-`
-  
+*   **Void Linux:** `sudo xbps-install -S gcc libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel`
+
 ### 2. Compilar
 
 Clona el repositorio y usa el script de auto-compilación incluido:
