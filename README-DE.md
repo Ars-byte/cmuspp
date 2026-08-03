@@ -54,9 +54,7 @@ CMUS++ extrahiert und zeigt Albumcover automatisch an:
 Einfach ausprobieren? Lade das vorkompilierte Binary vom [**Release v1.1.0**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.1.0) (Linux x86_64):
 
 ```bash
-wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-linux-x86_64
-chmod +x cmuspp-linux-x86_64
-./cmuspp-linux-x86_64
+sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
 ```
 
 > Benötigt den `themes/`-Ordner (aus dem Repository) neben der ausführbaren Datei.
