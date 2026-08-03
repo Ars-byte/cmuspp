@@ -53,7 +53,7 @@ chmod +x cmuspp-linux-x86_64
 Sous Void Linux, vous pouvez installer CMUS++ depuis le paquet `.xbps` précompilé :
 
 ```bash
-sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp
+sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
 ```
 
 Le paquet installe le binaire dans `/usr/bin/cmuspp` ainsi que les 86 thèmes intégrés et les thèmes XML supplémentaires dans `/usr/share/cmuspp/themes/`.
@@ -69,7 +69,6 @@ Vous avez besoin d'un compilateur C++ et des bibliothèques `libsndfile`, `libjp
 *   **Ubuntu / Debian :** `sudo apt install g++ libsndfile1-dev libasound2-dev libjpeg-dev libpng-dev`
 *   **Arch Linux :** `sudo pacman -S gcc libsndfile alsa-lib libjpeg-turbo libpng`
 *   **macOS :** `brew install libsndfile jpeg libpng` (requiert Homebrew)
-*   **Void Linux :** `sudo xbps-install -S gcc libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel`
 
 ### 2. Compiler
 
