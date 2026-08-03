@@ -211,4 +211,3 @@ Press `t` inside the app to change the theme. You can create your own themes by 
 
 ---
 **MIT License** — Feel free to modify and use the code.
-```
