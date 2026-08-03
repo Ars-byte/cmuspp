@@ -3,20 +3,28 @@ pkgname=cmuspp-void
 version=1.1.1
 revision=2
 short_desc="C++17 terminal music player with cover art, lyrics and themes"
-maintainer="Ars-byte <Ars-byte@users.noreply.github.com>"
-makedepends="gcc libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel"
+maintainer="Ars-byte <shaggyfino11@gmail.com>"
 license="MIT"
 homepage="https://github.com/Ars-byte/cmuspp"
 distfiles="https://github.com/Ars-byte/cmuspp/releases/download/v${version}/cmuspp-main.tar.gz"
 checksum="d48c6892a22d7755c34e020a9a9560c72a7186a21247be29235f4cf9c8caeac0"
 
-depends="alsa-lib libsndfile libpng libjpeg-turbo libflac lame libmpg123 libogg opus libvorbis zlib"
-do_build(){
-        chmod +x bootstrap.sh
-    ./bootstrap.sh
+makedepends="libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel"
+depends="lame libmpg123 libogg opus libvorbis"
+
+do_build() {
+    $CXX main.cpp -o cmuspp \
+        -std=c++17 -Wall -Wextra -pthread \
+        -DCMUSPP_HAS_JPEG -DCMUSPP_HAS_PNG \
+        $CXXFLAGS $LDFLAGS \
+        -lsndfile -lpng -ljpeg -lasound
 }
-do_install(){
-        vbin cmuspp
-    vcopy usr/share/cmuspp/themes themes/*.xml
-    vinstall LICENSE 644 usr/share/licenses/cmuspp/
+
+do_install() {
+    vbin cmuspp
+    
+    vmkdir usr/share/cmuspp/themes
+    vcopy themes/*.xml usr/share/cmuspp/themes/
+    
+    vlicense LICENSE
 }
