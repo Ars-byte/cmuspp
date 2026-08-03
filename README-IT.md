@@ -212,4 +212,3 @@ Premi `t` nell'app per cambiare tema. Puoi creare i tuoi temi creando file `.xml
 
 ---
 **Licenza MIT** — Sentiti libero di modificare e usare il codice.
-```

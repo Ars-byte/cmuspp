@@ -212,4 +212,3 @@ Appuyez sur `t` dans l'application pour changer de thème. Vous pouvez créer vo
 
 ---
 **Licence MIT** — N'hésitez pas à modifier et à utiliser le code.
-```
