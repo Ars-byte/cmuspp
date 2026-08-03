@@ -1,20 +1,22 @@
-# Template file for 'cmuspp'
+# Template file for 'cmuspp-void'
 pkgname=cmuspp-void
 version=1.1.1
 revision=2
-short_desc="is a terminal music player written in C++17. Ultra-lightweight"
-maintainer="Ars-Bytes"
+short_desc="C++17 terminal music player with cover art, lyrics and themes"
+maintainer="Ars-byte <shaggyfino11@gmail.com>"
 makedepends="gcc libsndfile-devel alsa-lib-devel libjpeg-turbo-devel libpng-devel"
 license="MIT"
 homepage="https://github.com/Ars-byte/cmuspp"
 distfiles="https://github.com/Ars-byte/cmuspp/releases/download/v${version}/cmuspp-main.tar.gz"
 checksum="d48c6892a22d7755c34e020a9a9560c72a7186a21247be29235f4cf9c8caeac0"
 
-depends="libsndfile alsa-lib libjpeg-turbo libpng"
+depends="alsa-lib libsndfile libpng libjpeg-turbo libflac lame libmpg123 libogg opus libvorbis zlib"
 do_build(){
         chmod +x bootstrap.sh
     ./bootstrap.sh
 }
 do_install(){
         vbin cmuspp
+    vcopy usr/share/cmuspp/themes themes/*.xml
+    vinstall LICENSE 644 usr/share/licenses/cmuspp/
 }

@@ -25,7 +25,7 @@ xbps-create -A "$ARCH" -n "${PKG}" \
   -s "C++ terminal music player with cover art, lyrics and themes" \
   -S "CMUS++ is a lightweight C++17 terminal music player. Features: MP3/FLAC/WAV/OGG/OPUS/AIFF, embedded cover art (kitty protocol or ANSI half-blocks), synchronized .lrc lyrics and lyrics embedded in tags (100% offline), 86 built-in color themes + custom XML themes, fully keyboard-driven." \
   -l "MIT" -H "https://github.com/Ars-byte/cmuspp" -m "Ars-byte" \
-  -D "libsndfile alsa-lib libjpeg-turbo libpng" \
+  -D "alsa-lib libsndfile libpng libjpeg-turbo libflac lame libmpg123 libogg opus libvorbis zlib" \
   /tmp/cmuspp-pkg
 
 mkdir -p "${REPO_DIR}"
