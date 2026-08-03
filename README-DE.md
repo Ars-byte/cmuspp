@@ -54,7 +54,9 @@ CMUS++ extrahiert und zeigt Albumcover automatisch an:
 Einfach ausprobieren? Lade das vorkompilierte Binary vom [**Release v1.1.0**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.1.0) (Linux x86_64):
 
 ```bash
-sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-linux-x86_64
+chmod +x cmuspp-linux-x86_64
+./cmuspp-linux-x86_64
 ```
 
 > Benötigt den `themes/`-Ordner (aus dem Repository) neben der ausführbaren Datei.
@@ -66,16 +68,7 @@ sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/do
 Unter Void Linux kannst du CMUS++ aus dem vorkompilierten `.xbps`-Paket installieren:
 
 ```bash
-# 1. Paket herunterladen
-wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-1.1.0_1.x86_64.xbps
-
-# 2. Als lokales Repository indizieren
-sudo mkdir -p /var/db/xbps/cmuspp
-sudo mv cmuspp-1.1.0_1.x86_64.xbps /var/db/xbps/cmuspp/
-sudo xbps-rindex -a /var/db/xbps/cmuspp/*.xbps
-
-# 3. Installieren (Abhängigkeiten werden aus den Void-Repos aufgelöst)
-sudo xbps-install -S --repository=/var/db/xbps/cmuspp cmuspp
+sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
 ```
 
 Das Paket installiert die Binärdatei nach `/usr/bin/cmuspp` sowie die 86 integrierten Designs und die zusätzlichen XML-Designs unter `/usr/share/cmuspp/themes/`.
