@@ -39,7 +39,9 @@
 Just want to try it? Grab the prebuilt binary from the [**v1.1.0 release**](https://github.com/Ars-byte/cmuspp/releases/tag/v1.1.0) (Linux x86_64):
 
 ```bash
-sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
+wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-linux-x86_64
+chmod +x cmuspp-linux-x86_64
+./cmuspp-linux-x86_64
 ```
 
 > Requires the `themes/` folder (from the repo) next to the executable.
@@ -51,16 +53,7 @@ sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/do
 On Void Linux you can install CMUS++ from the prebuilt `.xbps` package:
 
 ```bash
-# 1. Download the package
-wget https://github.com/Ars-byte/cmuspp/releases/download/v1.1.0/cmuspp-1.1.0_1.x86_64.xbps
-
-# 2. Index it as a local repository
-sudo mkdir -p /var/db/xbps/cmuspp
-sudo mv cmuspp-1.1.0_1.x86_64.xbps /var/db/xbps/cmuspp/
-sudo xbps-rindex -a /var/db/xbps/cmuspp/*.xbps
-
-# 3. Install (dependencies resolve from the Void repos)
-sudo xbps-install -S --repository=/var/db/xbps/cmuspp cmuspp
+sudo xbps-install -S --repository=https://github.com/Ars-byte/cmuspp/releases/download/v1.1.1 cmuspp-void
 ```
 
 The package installs the binary to `/usr/bin/cmuspp` plus the 86 built-in themes and the extra XML themes in `/usr/share/cmuspp/themes/`.
